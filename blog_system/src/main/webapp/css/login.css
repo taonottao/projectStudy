@@ -1,0 +1,71 @@
+/*这个事登录页的css*/
+.login-container {
+    width: 100%;
+    height: calc(100% - 50px);
+
+    /*为了让 login-dialogue 垂直水平居中, 使用弹性布局*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-dialogue {
+    width: 500px;
+    height: 350px;
+
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 10px;
+}
+
+/*登录标题*/
+.login-dialogue h3 {
+    font-size: 24px;
+    font-weight: 900;
+    text-align: center;
+    margin-top: 60px;
+    margin-bottom: 40px;
+}
+
+/*针对每一行的样式*/
+.row {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    /*垂直居中*/
+    align-items: center;
+}
+
+/*每一行的文字*/
+.row span{
+    font-size: 20px;
+    width: 60px;
+}
+
+.row #username {
+    width: 300px;
+    height: 40px;
+    font-size: 20px;
+    text-indent: 10px;
+}
+
+.row #password{
+    width: 300px;
+    height: 40px;
+    font-size: 20px;
+    text-indent: 10px;
+}
+
+.row #submit {
+    width: 150px;
+    height: 40px;
+    color: white;
+    background-color: rgba(70, 49, 44, 0.4);
+    border: none;
+    border-radius: 10px;
+    margin-top: 40px;
+}
+
+.row #submit:hover{
+    background-color: gray;
+}

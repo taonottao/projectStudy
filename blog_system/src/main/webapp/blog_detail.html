@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>博客详情页</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/blog_detail.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <!--    引入 editor.md 的依赖-->
+    <link rel="stylesheet" href="editor.md/css/editormd.min.css">
+    <script src="editor.md/lib/marked.min.js"></script>
+    <srcipt src="editor.md/lib/prettify.min.js"></srcipt>
+    <script src="editor.md/editormd.js"></script>
+</head>
+<body>
+<!--    导航栏 nav 是 导航 这个词的缩写-->
+    <div class="nav">
+        <!--        logo-->
+        <img src="imag/catlogo.png" alt="">
+        <div class="title">我的博客系统</div>
+        <!--        只是一个空白, 用来把后面的链接挤过去,
+                    这是一个简单粗暴的写法-->
+        <div class="spacer"></div>
+        <a href="blog_list.html">主页</a>
+        <a href="blog_edit.html">写博客</a>
+        <!--        这里的地址回头再说-->
+        <a href="">注销</a>
+    </div>
+    <!--    页面的主体部分-->
+    <div class="container">
+        <!--        左侧信息-->
+        <div class="container-left">
+            <!--            这个 div 表示整个用户信息的区域-->
+            <div class="card">
+                <!--                用户的头像-->
+                <img src="imag/cxk.png" alt="">
+                <!--                用户名-->
+                <h3>比特小王</h3>
+                <!--                github 地址-->
+                <a href="https://www.github.com/taonottao">github 地址</a>
+                <!--                统计信息-->
+                <div class="counter">
+                    <span>文章</span>
+                    <span>分类</span>
+                </div>
+                <div class="counter">
+                    <span>2</span>
+                    <span>1</span>
+                </div>
+            </div>
+        </div>
+        <!--        右侧信息-->
+        <div class="container-right">
+            <h3></h3>
+            <div class="date"></div>
+            <div id="content">
+            </div>
+       </div>
+    </div>
+    <script>
+        function getBlog(){
+            $.ajax({
+                type: 'get',
+                url: 'blog' + location.search,
+                success: function (body){
+                    // 设置博客的标题
+                    let h3 = document.querySelector('.container-right h3');
+                    h3.innerHTML = body.title;
+                    // 设置发布时间
+                    let dateDiv = document.querySelector('.container-right .date');
+                    dateDiv.innerHTML = body.postTime;
+                    // 设置正文. 正文内容应该是 markdown 格式的数据
+                    // 此处要显示的应该是渲染过的 markdown 的内容, 而不是 markdown 的原始字符串
+                    // 第一个参数, 是一个 html 元素的id, 接下来的渲染结果会放到对应的元素中
+                    editormd.markdownToHTML('content', {markdown: body.content});
+                }
+            })
+        }
+
+        getBlog();
+
+        function checkLogin(){
+            $.ajax({
+                type: 'get',
+                url: 'login',
+                success: function (body){
+                    if(body.userId && body.userId > 0) {
+                        // 登录成功
+                        console.log("当前用户已经登录!!");
+                    } else {
+                        // 当前未登录
+                        // 强制跳转到登录页面
+                        location.assign('login.html');
+                    }
+                }
+            });
+        }
+        checkLogin();
+
+        // 函数定义
+        function getAuthor(){
+            $.ajax({
+                type: 'get',
+                url: 'author' + location.search,
+                success: function (body){
+                    // 把 username 设置到界面上
+                    let h3 = document.querySelector('.container-left .card h3');
+                    h3.innerHTML = body.username;
+                }
+            })
+        }
+        // 函数调用
+        getAuthor();
+    </script>
+</body>
+</html>
