@@ -54,6 +54,9 @@ public class BlogDao {
                 blog.setBlogId(resultSet.getInt("blogId"));
                 blog.setTitle(resultSet.getString("title"));
                 String content = resultSet.getString("content");
+                if(content == null){
+                    content = "";
+                }
                 if(content.length() > 100){
                     content = content.substring(0, 100) + "...";
                 }
