@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.ProblemMapper">
+    <insert id="insert">
+        insert into oj_table(title, level, description, templateCode, testCode)
+        values (#{title},#{level},#{description},#{templateCode},#{testCode})
+    </insert>
+
+    <delete id="delete">
+        delete from oj_table where id=#{id}
+    </delete>
+
+    <select id="selectAll" resultType="com.example.demo.entity.Problem">
+        select id, title, level from oj_table
+    </select>
+
+    <select id="selectOne" resultType="com.example.demo.entity.Problem">
+        select * from oj_table where id=#{id};
+    </select>
+</mapper>
