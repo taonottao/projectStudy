@@ -3,6 +3,7 @@ package com.example.demo.common;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.UUID;
 
 /**
  * 每次的 “编译+运行” 这个过程，就成为是一个 Task
@@ -13,17 +14,27 @@ import java.io.FileNotFoundException;
 public class Task {
     // 约定一些常量来表示下面的文件
     // 这个表示所有临时文件所在的目录
-    private static final String WORK_DIR = "./tmp/";
+    private static String WORK_DIR = "./tmp/";
     // 约定代码的类名
-    private static final String CLASS = "Solution";
+    private static String CLASS = null;
     // 约定要编译的代码文件名
-    private static final String CODE = WORK_DIR + "Solution.java";
+    private static String CODE = null;
     // 约定存放编译错误信息的文件名
-    private static final String COMPILE_ERROR = WORK_DIR + "compileError.txt";
+    private static String COMPILE_ERROR = null;
     // 约定存放运行时的标准输出文件名
-    private static final String STDOUT = WORK_DIR + "stdout.txt";
+    private static String STDOUT = null;
     // 约定存放运行时的标准错误文件名
-    private static final String STDERR = WORK_DIR + "stderr.txt";
+    private static String STDERR = null;
+
+    public Task(){
+        // 在 Java 中使用 UUID 这个类就能生成一个 UUID 了
+        WORK_DIR = "./tmp/" + UUID.randomUUID().toString() + "/";
+        CLASS = "Solution";
+        CODE = WORK_DIR + "Solution.java";
+        COMPILE_ERROR = WORK_DIR + "compileError.txt";
+        STDOUT = WORK_DIR + "stdout.txt";
+        STDERR = WORK_DIR + "stderr.txt";
+    }
 
     /**
      * 这个 Task 类提供的核心方法，就叫做 compileAndRun 编译+运行的意思
