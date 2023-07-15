@@ -3,6 +3,8 @@ package com.example.demo.common;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -50,6 +52,13 @@ public class Task {
         }
         Answer answer = new Answer();
 
+        // 进行安全性判定
+        if(!checkCodeSafe(question.getCode())){
+            System.out.println("用户提交了不安全的代码!");
+            answer.setError(3);
+            answer.setReason("您提交的代码不安全！");
+            return answer;
+        }
         // 1. 把 question 中的 code 写入到一个 Solution.java 文件中
         FileUtil.writeFile(CODE, question.getCode());
         // 2. 创建子进程，调用 javac 进行编译。注意！编译的时候需要有一个.java文件
@@ -86,6 +95,26 @@ public class Task {
         answer.setError(0);
         answer.setStdout(FileUtil.readFile(STDOUT));
         return answer;
+    }
+
+    private boolean checkCodeSafe(String code) {
+        List<String> blackList = new ArrayList<>();
+        // 反之提交的代码运行恶意的程序
+        blackList.add("Runtime");
+        blackList.add("exec");
+        // 禁止提交的代码读写文件
+        blackList.add("java.io");
+        // 禁止提交的代码访问网络
+        blackList.add("java.net");
+
+        for (String target : blackList) {
+            int pos = code.indexOf(target);
+            if (pos >= 0) {
+                // 找到任意的恶意代码，返回 false 表示不安全
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args) throws FileNotFoundException {

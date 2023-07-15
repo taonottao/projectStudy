@@ -12,3 +12,12 @@ create table oj_table (
     templateCode varchar(4096),
     testCode varchar(4096)
 );
+
+drop table if exists userinfo;
+
+create table userinfo (
+    id int primary key auto_increment,
+    username varchar(25) not null unique ,
+    password varchar(65) not null
+);
+

@@ -36,7 +36,7 @@ public class ProblemController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RequestMapping("/add")
+    @RequestMapping("/insert")
     public AjaxResult add(Problem problem) {
         // 1. 非空校验
         if (problem == null || !StringUtils.hasLength(problem.getTitle())
@@ -46,7 +46,7 @@ public class ProblemController {
             return AjaxResult.fail(-1, "非法参数");
         }
         // 2. 数据库的添加操作
-        return AjaxResult.success(problem);
+        return AjaxResult.success(problemService.insert(problem));
     }
 
     @RequestMapping("/delete")
