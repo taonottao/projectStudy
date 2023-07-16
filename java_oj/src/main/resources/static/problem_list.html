@@ -58,13 +58,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="problemTable">
-<!--                                    <tr>-->
-<!--                                        <td>1</td>-->
-<!--                                        <td>-->
-<!--                                            <a href="#">两数之和</a>-->
-<!--                                        </td>-->
-<!--                                        <td>简单</td>-->
-<!--                                    </tr>-->
                                 </tbody>
                             </table>
                         </div>
@@ -81,14 +74,6 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-xs-12 text-center">
-                        <!-- <h3>Upgrade to Pro Version</h3>
-                        <p class="pt-2">
-                            We are working on <b>Charcoal Pro</b> which will be released soon. The pro version 
-                            will have a lot more components, sections, icons, plugins and example pages. 
-                            Join the waiting list to get notified when we release it (plus discount code).
-                        </p>
-                        <a class="btn btn-warning" href="https://wireddots.com/newsletter">Join Waiting List</a>
-                        <hr class="my-5"/> -->
                         <p class="pt-2 text-muted">
                             &copy;by 王同学
                         </p>
@@ -107,7 +92,8 @@
                 // 1. 先通过 ajax 从服务器获取到题目列表
                 $.ajax({
                     url:"/problem/selectall",
-                    type:"GET",
+                    type:"POST",
+                    data:{},
                     success: function(result){
                         // 判断是否为空
                         if(result != null && result.code == 200) {
@@ -123,7 +109,8 @@
             // 通过这个函数来把数据转换成 HTML 片段
             function makeProblemTable(result){
                 var problemTable = document.querySelector("#problemTable");
-                for(var problem of result.data.list){
+                for(var i = 0; i < result.data.length; i++){
+                    var problem = result.data[i];
                     var tr = document.createElement("tr");
 
                     var tdId = document.createElement("td");
@@ -133,13 +120,13 @@
                     var tdTitle = document.createElement("td");
                     var a = document.createElement("a");
                     a.innerHTML = problem.title;
-                    a.href = 'problem_detail?id=' + problem.id;
+                    a.href = 'problem_detail.html?id=' + problem.id;
                     a.target = '_blank';
                     tdTitle.appendChild(a);
                     tr.appendChild(tdTitle);
 
                     var tdLevel = document.createElement("td");
-                    td.innerHTML = problem.level;
+                    tdLevel.innerHTML = problem.level;
                     tr.appendChild(tdLevel);
 
 

@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 
 /**
@@ -61,7 +62,8 @@ public class ProblemController {
 
     @RequestMapping("/selectall")
     public AjaxResult selectAll() {
-        return AjaxResult.success(problemService.selectAll());
+        List<Problem> list = problemService.selectAll();
+        return AjaxResult.success(list);
     }
 
     @RequestMapping("/selectone")

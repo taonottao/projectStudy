@@ -43,8 +43,29 @@
             <div class="container">
                 <div class="row mt-4">
                     <div class="col-sm-12 pb-4">
-                        <div class="jumbotron jumbotron-fluid">
-                            <div class="container" id="problemDesc">
+                        <h3>增加题目</h3>
+                        <form>
+                            <div class="form-group row">
+                                <label for="title" class="col-sm-2 col-form-label">题目名称</label>
+                                <div class="col-sm-10">
+                                    <input type="email" class="form-control" id="title">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="level" class="col-sm-2 col-form-label">题目难度</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="level">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-sm-12 pb-4">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="description">题目描述</label>
+                                <textarea class="form-control" id="description" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -52,25 +73,24 @@
                 <div class="row mt-4">
                     <div class="col-sm-12 pb-4">
                         <div class="form-group">
-                            <label for="codeEditor">代码编辑框</label>
-                            <div id="editor" style="min-height: 400px">
+                            <label for="codeEditor">代码模板</label>
+                            <div style="min-height: 400px">
                                 <textarea class="form-control" id="codeEditor" style="width: 100%; height: 400px;"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" id="submitButton" onclick="makeProblemDetail()">提交</button>
                 <div class="row mt-4">
                     <div class="col-sm-12 pb-4">
-                        <div class="jumbotron jumbotron-fluid">
-                            <div class="container" >
-                                <pre id="problemResult">
-
-                                </pre>
+                        <div class="form-group">
+                            <label for="testCase">测试用例</label>
+                            <div style="min-height: 400px">
+                                <textarea class="form-control" id="testCase" style="width: 100%; height: 400px;"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
+                <button type="button" class="btn btn-primary" id="submitButton" onclick="insert()">提交</button>
             </div>
         </section>
 
@@ -97,90 +117,49 @@
 
         <script type="text/javascript">
 
-            function initAce(){
-                // 参数 editor 就对应刚才在 HTML 里加的那个 div 的 id
-                let editor = ace.edit("editor");
-                editor.setOptions({
-                    enableBasicAutocompletion: true,
-                    enableSnippets: true,
-                    enableLiveAutocompletion: true
-                });
-                editor.setTheme("ace/theme/twilight");
-                editor.session.setMode("ace/mode/java");
-                editor.resize();
-                document.getElementById('editor').style.fontSize = '20px';
+            function insert() {
 
-                return editor;
-            }
-            let editor = initAce();
-
-            // 通过 ajax 从服务器获取到题目的详情
-            function getProblem(id){
-                if (id == "") {
-                    alert("非法参数");
+                let title = $("#title");
+                let level = $("#level");
+                let description = $("#description");
+                let codeEditor = $("#codeEditor");
+                let testCase = $("#testCase");
+                // 非空校验
+                if (title.val() == "") {
+                    alert("请输入题目名称！！");
+                    title.focus();
                     return;
                 }
-                // 1. 通过 ajax 给服务器发送一个请求
-                $.ajax({
-                    url:"/problem/selectone",
-                    type:"POST",
-                    data:{"id":id},
-                    success: function (result) {
-                        if (result != null && result.code == 200) {
-                            makeProblemDetail(result);
-                        }
-                    }
-                });
-
-            }
-
-            function getUrlValue(key) {
-                // ?id=3&m=6
-                let params = location.search;
-                if (params.length > 1) {
-                    params = params.substring(1);
-                    let paramsArr = params.split("&");
-                    for(let i = 0; i < paramsArr.length; i++){
-                        let kv = paramsArr[i].split("=");
-                        if(kv[0] == key){
-                            return kv[1];
-                        }
-                    }
+                if (level.val() == "") {
+                    alert("请输入题目难度！！");
+                    level.focus();
+                    return;
                 }
-                return "";
-            }
-            getProblem(getUrlValue("id"));
-
-
-
-            function makeProblemDetail(result) {
-                // 1. 获取到 problemDesc，把题目详情写进去
-                let problemDesc = document.querySelector("#problemDesc");
-                let h3 = document.createElement("h3");
-                h3.innerHTML = result.data.id + "." + result.data.title + "_" + result.data.level;
-                problemDesc.appendChild(h3);
-
-                let pre = document.createElement("pre");
-                let p = document.createElement("p");
-                p.innerHTML = result.data.description;
-                pre.appendChild(p);
-                problemDesc.appendChild(pre);
-
-                // 2. 把代码的模板填写到编辑框中
-                editor.setValue(result.data.templateCode);
-
+                if (description.val() == "") {
+                    alert("请输入题目描述！！");
+                    description.focus();
+                    return;
+                }
+                if (codeEditor.val() == "") {
+                    alert("请输入代码模板！！");
+                    codeEditor.focus();
+                    return;
+                }
+                if (testCase.val() == "") {
+                    alert("请输入测试用例！！");
+                    testcase.focus();
+                    return;
+                }
                 $.ajax({
-                    url: "/problem/compile-run",
+                    url: "/problem/insert",
                     type: "POST",
-                    data: {"templateCode":editor.getValue()},
-                    success: function (result) {
-                        let problemResult = document.querySelector("#problemResult");
-                        if (result.data.error == 0) {
-                            // 编译运行没有问题, 把 stdout 显示到页面中
-                            problemResult.innerHTML = result.data.stdout;
+                    data: {"title":title.val(),"level":level.val(),"description":description.val(),"templateCode":codeEditor.val(),"testCode":testCase.val()},
+                    success: function (result1) {
+                        if (result1 != null && result1.code == 200) {
+                            alert("题目添加成功！！");
+                            location.href = "add_problem.html";
                         }else {
-                            // 编译运行有问题, 把 reason 显示到页面中
-                            problemResult.innerHTML = result.data.reason;
+                            alert("添加失败，请重试！！");
                         }
                     }
                 })
