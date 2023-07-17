@@ -78,7 +78,7 @@ public class ProblemController {
 
     static class CompileRequest{
         public int id;
-        public String code;
+        public String templateCode;
     }
     static class CompileResponse{
         public int error;
@@ -90,6 +90,9 @@ public class ProblemController {
         response.setContentType("application/json;charset=utf8");
         // 1. 先读取请求的正文，并且按照 json 格式进行解析
         String body = readBody(request);
+        if (body == null) {
+            return AjaxResult.fail(-1, "请求正文为空!!");
+        }
         CompileRequest compileRequest = objectMapper.readValue(body, CompileRequest.class);
         // 2. 根据 id 从数据库中查找到题目的详情 => 得到测试用例代码
         Problem problem = problemService.selectOne(compileRequest.id);
@@ -99,12 +102,16 @@ public class ProblemController {
         // testCode 是测试用例代码
         String testCode = problem.getTestCode();
         // requestCode 是用户提交的代码
-        String requestCode = compileRequest.code;
+        String requestCode = compileRequest.templateCode;
+        if (requestCode == null) {
+            return AjaxResult.fail(-1, "提交代码参数非法!!");
+        }
         // 3. 把用户提交的代码和测试用例代码拼接成一个完整的代码
         String finalCode = mergeCode(requestCode, testCode);
         if (finalCode == null) {
             return AjaxResult.fail(-1, "提交代码参数非法!!");
         }
+//        System.out.println(finalCode);
         // 4. 创建一个 Task 实例，调用里面的 compileAndRun 来编译运行
         Task task = new Task();
         Question question = new Question();
@@ -117,6 +124,7 @@ public class ProblemController {
         compileResponse.stdout = answer.getStdout();
         return AjaxResult.success(compileResponse);
     }
+
 
     private static String mergeCode(String requestCode, String testCode) {
         // 1. 查找最后一个 } 的位置

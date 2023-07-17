@@ -61,13 +61,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="problemTable">
-<!--                                    <tr>-->
-<!--                                        <td>1</td>-->
-<!--                                        <td>-->
-<!--                                            <a href="#">两数之和</a>-->
-<!--                                        </td>-->
-<!--                                        <td>简单</td>-->
-<!--                                    </tr>-->
                                 </tbody>
                             </table>
                         </div>
@@ -110,7 +103,8 @@
                 // 1. 先通过 ajax 从服务器获取到题目列表
                 $.ajax({
                     url:"/problem/selectall",
-                    type:"GET",
+                    type:"POST",
+                    data:{},
                     success: function(result){
                         // 判断是否为空
                         if(result != null && result.code == 200) {
@@ -126,7 +120,8 @@
             // 通过这个函数来把数据转换成 HTML 片段
             function makeProblemTable(result){
                 var problemTable = document.querySelector("#problemTable");
-                for(var problem of result.data.list){
+                for(var i = 0; i < result.data.length; i++){
+                    var problem = result.data[i];
                     var tr = document.createElement("tr");
 
                     var tdId = document.createElement("td");
@@ -136,13 +131,13 @@
                     var tdTitle = document.createElement("td");
                     var a = document.createElement("a");
                     a.innerHTML = problem.title;
-                    a.href = 'problem_detail?id=' + problem.id;
+                    a.href = 'admin_problem_detail.html?id=' + problem.id;
                     a.target = '_blank';
                     tdTitle.appendChild(a);
                     tr.appendChild(tdTitle);
 
                     var tdLevel = document.createElement("td");
-                    td.innerHTML = problem.level;
+                    tdLevel.innerHTML = problem.level;
                     tr.appendChild(tdLevel);
 
 

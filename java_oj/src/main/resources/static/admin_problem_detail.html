@@ -28,7 +28,7 @@
             <div class="container">
                 <div class="row vh-100">
                     <div class="col-sm-12 my-auto text-center">
-                        <h1>我的 OJ 平台</h1>
+                        <h1>管理员页面</h1>
                         <p class="lead text-capitalize my-4">
                             基于 SSM 实现的 OJ 系统
                         </p>
@@ -59,18 +59,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" id="submitButton" onclick="compileRun()">提交</button>
-                <div class="row mt-4">
-                    <div class="col-sm-12 pb-4">
-                        <div class="jumbotron jumbotron-fluid">
-                            <div class="container" >
-                                <pre id="problemResult">
-
-                                </pre>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-primary" id="submitButton" onclick="deleteProblem(id)">删除</button>
             </div>
         </section>
 
@@ -172,24 +161,24 @@
                 // 2. 把代码的模板填写到编辑框中
                 editor.setValue(result.data.templateCode);
 
-            }
-            function compileRun(){
+            };
+
+             function deleteProblem(id){
                 $.ajax({
-                    url: "/problem/compile-run",
+                    url:"/problem/delete",
                     type: "POST",
-                    data: JSON.stringify({"id":id,"templateCode":editor.getValue()}),
-                    success: function (result) {
-                        let problemResult = document.querySelector("#problemResult");
-                        if (result.data.error == 0) {
-                            // 编译运行没有问题, 把 stdout 显示到页面中
-                            problemResult.innerHTML = result.data.stdout;
-                        }else {
-                            // 编译运行有问题, 把 reason 显示到页面中
-                            problemResult.innerHTML = result.data.reason;
+                    data:{"id":id},
+                    success: function (result){
+                        if(result != null && result.code == 200){
+                            alert("删除成功！");
+                            location.href = "admin.html";
+                        }else{
+                            alert("删除失败，请重试！！");
                         }
                     }
                 })
             }
+
         </script>
     </body>
 </html>

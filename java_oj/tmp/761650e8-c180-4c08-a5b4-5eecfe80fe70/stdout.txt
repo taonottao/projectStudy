@@ -1,0 +1,2 @@
+testcase1 OK
+testcase2 failed!
