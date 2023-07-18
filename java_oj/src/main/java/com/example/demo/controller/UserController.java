@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.common.AjaxResult;
 import com.example.demo.common.AppVariable;
+import com.example.demo.common.PasswordUtil;
 import com.example.demo.entity.Userinfo;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,15 @@ public class UserController {
             return AjaxResult.fail(-1, "注册失败，请重试！");
         }
 
-        // todo 密码加盐
+        // 密码加盐
+        userinfo.setPassword(PasswordUtil.encrypt(userinfo.getPassword()));
         return AjaxResult.success(userService.reg(userinfo));
     }
 
     @RequestMapping("/login")
     public AjaxResult getUserByName(HttpServletRequest request, String username, String password) {
         if(!StringUtils.hasLength(username) || !StringUtils.hasLength(password)){
-            return AjaxResult.fail(-1, "注册失败，请重试！");
+            return AjaxResult.fail(-1, "登录失败，请重试！");
         }
 
         Userinfo userinfo = userService.getUserByName(username);
@@ -47,7 +49,7 @@ public class UserController {
         }
 
         // 比对密码
-        if(!password.equals(userinfo.getPassword())){
+        if(!PasswordUtil.checkPassword(password, userinfo.getPassword())){
             return AjaxResult.fail(-1, "账户或密码错误！");
         }
 
