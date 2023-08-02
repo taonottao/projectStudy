@@ -5,6 +5,8 @@ import com.example.mmq.mqserver.core.Exchange;
 import com.example.mmq.mqserver.core.MSGQueue;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * @version 1.0
  * @Author T-WANG
@@ -19,9 +21,12 @@ public interface MetaMapper {
 
 
     void insertExchange(Exchange exchange);
+    List<Exchange> selectAllExchange();
     void deleteExchange(String exchangeName);
     void insertQueue(MSGQueue queue);
+    List<MSGQueue> selectAllQueue();
     void deleteQueue(String queueName);
     void insertBinding(Binding binding);
+    List<Binding> selectAllBinding();
     void deleteBinding(Binding binding);
 }

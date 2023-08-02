@@ -33,6 +33,10 @@
         insert into exchange values (#{name},#{type},#{durable},#{autoDelete},#{arguments});
     </insert>
 
+    <select id="selectAllExchange" resultType="com.example.mmq.mqserver.core.Exchange">
+        select * from exchange;
+    </select>
+
     <delete id="deleteExchange">
         delete from exchange where name = #{exchangeName};
     </delete>
@@ -41,6 +45,10 @@
         insert into queue values (#{name},#{durable},#{exclusive},#{autoDelete},#{arguments});
     </insert>
 
+    <select id="selectAllQueue" resultType="com.example.mmq.mqserver.core.MSGQueue">
+        select * from queue;
+    </select>
+
     <delete id="deleteQueue">
         delete from queue where name = #{queueName};
     </delete>
@@ -48,6 +56,10 @@
     <insert id="insertBinding">
         insert into binding values (#{exchangeName}, #{queueName}, #{bindingKey});
     </insert>
+
+    <select id="selectAllBinding" resultType="com.example.mmq.mqserver.core.Binding">
+        select * from binding;
+    </select>
 
     <delete id="deleteBinding">
         delete from binding where exchangeName=#{exchangeName} and queueName=#{queueName};
