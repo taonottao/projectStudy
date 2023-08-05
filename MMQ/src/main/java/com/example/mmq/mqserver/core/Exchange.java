@@ -62,4 +62,8 @@ public class Exchange {
         arguments.put(key, value);
     }
 
+    public void setArguments(Map<String, Object> arguments) {
+        this.arguments = arguments;
+    }
+
 }

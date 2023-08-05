@@ -2,13 +2,18 @@ package com.example.mmq;
 
 import com.example.mmq.common.MQException;
 import com.example.mmq.mqserver.core.*;
+import com.example.mmq.mqserver.datacenter.DiskDataCenter;
 import com.example.mmq.mqserver.datacenter.MemoryDataCenter;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Watchable;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,6 +154,63 @@ public class MemoryDataCenterTests {
         actMessage = memoryDataCenter.getMessageWaitAck("testQueue", expMessage.getMessageId());
 
         Assertions.assertNull(actMessage);
+    }
+
+    @Test
+    public void testRecovery() throws MQException, IOException, ClassNotFoundException {
+        // 由于后续需要进行数据库操作，依赖 MyBatis，就需要先启动 SpringApplication。这样才能进行后续的数据库操作
+        MmqApplication.context = SpringApplication.run(MmqApplication.class);
+
+        // 1. 在硬盘上构造好数据
+        DiskDataCenter diskDataCenter = new DiskDataCenter();
+        diskDataCenter.init();
+
+        Exchange expExchange = createTestExchange("testExchange");
+        diskDataCenter.insertExchange(expExchange);
+
+        MSGQueue expQueue = createTestQueue("testQueue");
+        diskDataCenter.insertQueue(expQueue);
+
+        Binding expBinding = new Binding();
+        expBinding.setBindingKey("testBindingKey");
+        expBinding.setQueueName("testQueue");
+        expBinding.setExchangeName("testExchange");
+        diskDataCenter.insertBinding(expBinding);
+
+        Message expMessage = createTestMessage("testMessage");
+        diskDataCenter.sendMessage(expQueue, expMessage);
+
+        // 2. 进行恢复操作
+        memoryDataCenter.recovery(diskDataCenter);
+
+        // 3. 对比结果
+        Exchange actExchange = memoryDataCenter.getExchange("testExchange");
+        Assertions.assertEquals(expExchange.getName(), actExchange.getName());
+        Assertions.assertEquals(expExchange.isAutoDelete(), actExchange.isAutoDelete());
+        Assertions.assertEquals(expExchange.getType(), actExchange.getType());
+        Assertions.assertEquals(expExchange.isDurable(), actExchange.isDurable());
+
+        MSGQueue actQueue = memoryDataCenter.getQueue("testQueue");
+        Assertions.assertEquals(expQueue.getName(), actQueue.getName());
+        Assertions.assertEquals(expQueue.isAutoDelete(), actQueue.isAutoDelete());
+        Assertions.assertEquals(expQueue.isDurable(), actQueue.isDurable());
+        Assertions.assertEquals(expQueue.isExclusive(), actQueue.isExclusive());
+
+        Binding actBinding = memoryDataCenter.getBinding("testExchange", "testQueue");
+        Assertions.assertEquals(expBinding.getQueueName(), actBinding.getQueueName());
+        Assertions.assertEquals(expBinding.getBindingKey(), actBinding.getBindingKey());
+        Assertions.assertEquals(expBinding.getExchangeName(), actBinding.getExchangeName());
+
+        Message actMessage = memoryDataCenter.pollMessage("testQueue");
+        Assertions.assertEquals(expMessage.getMessageId(), actMessage.getMessageId());
+        Assertions.assertEquals(expMessage.getRoutingKey(), actMessage.getRoutingKey());
+        Assertions.assertEquals(expMessage.getDeliverMode(), actMessage.getDeliverMode());
+        Assertions.assertArrayEquals(expMessage.getBody(), actMessage.getBody());
+
+        // 4. 清理硬盘数据，把整个 data 目录里的内容都删掉
+        MmqApplication.context.close();
+        File dataDir = new File("./data");
+        FileUtils.deleteDirectory(dataDir);
     }
 
 }
