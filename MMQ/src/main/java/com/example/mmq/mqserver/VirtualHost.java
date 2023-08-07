@@ -7,6 +7,7 @@ import com.example.mmq.mqserver.datacenter.MemoryDataCenter;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 通过这个类来表示虚拟主机
@@ -23,6 +24,10 @@ public class VirtualHost {
     private MemoryDataCenter memoryDataCenter = new MemoryDataCenter();
     private DiskDataCenter diskDataCenter = new DiskDataCenter();
     private Router router = new Router();
+
+    // 操作交换机的锁对象
+    private final Object exchangeLocker = new Object();
+    private final Object queueLocker = new Object();
 
     public String getVirtualHostName() {
         return virtualHostName;
@@ -61,26 +66,28 @@ public class VirtualHost {
         // 把交换机的名字，加上虚拟主机作为前缀
         exchangeName = virtualHostName + exchangeName;
         try {
-            // 1. 判断该交换机是否已经存在，直接通过内存查询
-            Exchange existsExchange = memoryDataCenter.getExchange(exchangeName);
-            if (existsExchange != null) {
-                // 该交换机已经存在
-                System.out.println("[VirtualHost] 交换机已经存在！exchangeName=" + exchangeName);
-                return true;
+            synchronized (exchangeLocker) {
+                // 1. 判断该交换机是否已经存在，直接通过内存查询
+                Exchange existsExchange = memoryDataCenter.getExchange(exchangeName);
+                if (existsExchange != null) {
+                    // 该交换机已经存在
+                    System.out.println("[VirtualHost] 交换机已经存在！exchangeName=" + exchangeName);
+                    return true;
+                }
+                // 2. 真正创建交换机
+                Exchange exchange = new Exchange();
+                exchange.setName(exchangeName);
+                exchange.setType(exchangeType);
+                exchange.setDurable(durable);
+                exchange.setArguments(arguments);
+                // 3. 把交换机对象写入硬盘
+                if (durable) {
+                    diskDataCenter.insertExchange(exchange);
+                }
+                // 5. 把交换机对象写入内存
+                memoryDataCenter.insertExchange(exchange);
+                System.out.println("[VirtualHost] 交换机创建完成！exchangeName=" + exchangeName);
             }
-            // 2. 真正创建交换机
-            Exchange exchange = new Exchange();
-            exchange.setName(exchangeName);
-            exchange.setType(exchangeType);
-            exchange.setDurable(durable);
-            exchange.setArguments(arguments);
-            // 3. 把交换机对象写入硬盘
-            if (durable) {
-                diskDataCenter.insertExchange(exchange);
-            }
-            // 5. 把交换机对象写入内存
-            memoryDataCenter.insertExchange(exchange);
-            System.out.println("[VirtualHost] 交换机创建完成！exchangeName=" + exchangeName);
             return true;
         } catch (Exception e) {
             System.out.println("[VirtualHost] 交换机创建失败！exchangeName=" + exchangeName);
@@ -92,18 +99,20 @@ public class VirtualHost {
     public boolean exchangeDelete(String exchangeName) {
         exchangeName = virtualHostName + exchangeName;
         try {
-            // 1. 先找到对应的交换机
-            Exchange toDelete = memoryDataCenter.getExchange(exchangeName);
-            if (toDelete == null) {
-                throw new MQException("[virtualHost] 交换机不存在，无法删除！");
+            synchronized (exchangeLocker) {
+                // 1. 先找到对应的交换机
+                Exchange toDelete = memoryDataCenter.getExchange(exchangeName);
+                if (toDelete == null) {
+                    throw new MQException("[virtualHost] 交换机不存在，无法删除！");
+                }
+                // 2. 删除硬盘上的数据
+                if (toDelete.isDurable()) {
+                    diskDataCenter.deleteExchange(exchangeName);
+                }
+                // 3. 删除内存中的交换机数据
+                memoryDataCenter.deleteExchange(exchangeName);
+                System.out.println("[VirtualHost] 交换机删除成功！exchangeName=" + exchangeName);
             }
-            // 2. 删除硬盘上的数据
-            if (toDelete.isDurable()) {
-                diskDataCenter.deleteExchange(exchangeName);
-            }
-            // 3. 删除内存中的交换机数据
-            memoryDataCenter.deleteExchange(exchangeName);
-            System.out.println("[VirtualHost] 交换机删除成功！exchangeName=" + exchangeName);
             return true;
         } catch (Exception e) {
             System.out.println("[VirtualHost] 交换机删除失败！exchangeName=" + exchangeName);
@@ -116,26 +125,28 @@ public class VirtualHost {
                                 Map<String, Object> arguments) {
         queueName = virtualHostName + queueName;
         try {
-            // 1. 判断队列是否存在
-            MSGQueue existsQueue = memoryDataCenter.getQueue(queueName);
-            if (existsQueue != null) {
-                System.out.println("[VirtualHost] 队列已经存在！queueName=" + queueName);
-                return true;
+            synchronized (queueLocker) {
+                // 1. 判断队列是否存在
+                MSGQueue existsQueue = memoryDataCenter.getQueue(queueName);
+                if (existsQueue != null) {
+                    System.out.println("[VirtualHost] 队列已经存在！queueName=" + queueName);
+                    return true;
+                }
+                // 2. 创建队列对象
+                MSGQueue queue = new MSGQueue();
+                queue.setName(queueName);
+                queue.setDurable(durable);
+                queue.setExclusive(exclusive);
+                queue.setAutoDelete(autoDelete);
+                queue.setArguments(arguments);
+                // 3. 写进硬盘
+                if (durable) {
+                    diskDataCenter.insertQueue(queue);
+                }
+                // 4. 写进内存
+                memoryDataCenter.insertQueue(queue);
+                System.out.println("[VirtualHost] 队列创建成功！queueName=" + queueName);
             }
-            // 2. 创建队列对象
-            MSGQueue queue = new MSGQueue();
-            queue.setName(queueName);
-            queue.setDurable(durable);
-            queue.setExclusive(exclusive);
-            queue.setAutoDelete(autoDelete);
-            queue.setArguments(arguments);
-            // 3. 写进硬盘
-            if (durable) {
-                diskDataCenter.insertQueue(queue);
-            }
-            // 4. 写进内存
-            memoryDataCenter.insertQueue(queue);
-            System.out.println("[VirtualHost] 队列创建成功！queueName=" + queueName);
             return true;
         } catch (Exception e) {
             System.out.println("[VirtualHost] 队列创建失败！queueName=" + queueName);
@@ -147,18 +158,20 @@ public class VirtualHost {
     public boolean queueDelete(String queueName) {
         queueName = virtualHostName + queueName;
         try {
-            // 1. 根据队列名字，查询队列对象
-            MSGQueue queue = memoryDataCenter.getQueue(queueName);
-            if (queue == null) {
-                throw new MQException("[VirtualHost] 队列不存在！queueName=" + queueName);
+            synchronized (queueLocker) {
+                // 1. 根据队列名字，查询队列对象
+                MSGQueue queue = memoryDataCenter.getQueue(queueName);
+                if (queue == null) {
+                    throw new MQException("[VirtualHost] 队列不存在！queueName=" + queueName);
+                }
+                // 2. 删除硬盘数据
+                if (queue.isDurable()) {
+                    diskDataCenter.deleteQueue(queueName);
+                }
+                // 3. 删除内存数据
+                memoryDataCenter.deleteQueue(queueName);
+                System.out.println("[VirtualHost] 队列删除成功！queueName=" + queueName);
             }
-            // 2. 删除硬盘数据
-            if (queue.isDurable()) {
-                diskDataCenter.deleteQueue(queueName);
-            }
-            // 3. 删除内存数据
-            memoryDataCenter.deleteQueue(queueName);
-            System.out.println("[VirtualHost] 队列删除成功！queueName=" + queueName);
             return true;
         } catch (Exception e) {
             System.out.println("[VirtualHost] 队列删除失败！queueName=" + queueName);
@@ -171,33 +184,37 @@ public class VirtualHost {
         queueName = virtualHostName + queueName;
         exchangeName = virtualHostName + exchangeName;
         try {
-            // 1. 判断当前绑定是否已经存在
-            Binding existsBinding = memoryDataCenter.getBinding(exchangeName, queueName);
-            if (existsBinding != null) {
-                throw new MQException("[VirtualHost] binding 已经存在！queueName=" + queueName + ", exchangeName=" + exchangeName);
+            synchronized (exchangeLocker) {
+                synchronized (queueLocker) {
+                    // 1. 判断当前绑定是否已经存在
+                    Binding existsBinding = memoryDataCenter.getBinding(exchangeName, queueName);
+                    if (existsBinding != null) {
+                        throw new MQException("[VirtualHost] binding 已经存在！queueName=" + queueName + ", exchangeName=" + exchangeName);
+                    }
+                    // 2. 验证 bindingKey 是否合法
+                    if(!router.checkBindingKey(bindingKey)){
+                        throw new MQException("[VirtualHost] 非法！bindingKey=" + bindingKey);
+                    }
+                    // 3. 创建 Binding 对象
+                    Binding binding = new Binding();
+                    binding.setExchangeName(exchangeName);
+                    binding.setQueueName(queueName);
+                    binding.setBindingKey(bindingKey);
+                    // 4. 获取一下对应的交换机和队列。如果交换机或者队列不存在，这样的绑定也是无法创建的。
+                    MSGQueue queue = memoryDataCenter.getQueue(queueName);
+                    if (queue == null) {
+                        throw new MQException("[VirtualHost] 队列不存在！queueName=" + queueName);
+                    }
+                    Exchange exchange = memoryDataCenter.getExchange(exchangeName);
+                    if (exchange == null) {
+                        throw new MQException("[VirtualHost] 交换机不存在！exchangeName=" + exchangeName);
+                    }
+                    if (exchange.isDurable() && queue.isDurable()) {
+                        diskDataCenter.insertBinding(binding);
+                    }
+                    memoryDataCenter.insertBinding(binding);
+                }
             }
-            // 2. 验证 bindingKey 是否合法
-            if(!router.checkBindingKey(bindingKey)){
-                throw new MQException("[VirtualHost] 非法！bindingKey=" + bindingKey);
-            }
-            // 3. 创建 Binding 对象
-            Binding binding = new Binding();
-            binding.setExchangeName(exchangeName);
-            binding.setQueueName(queueName);
-            binding.setBindingKey(bindingKey);
-            // 4. 获取一下对应的交换机和队列。如果交换机或者队列不存在，这样的绑定也是无法创建的。
-            MSGQueue queue = memoryDataCenter.getQueue(queueName);
-            if (queue == null) {
-                throw new MQException("[VirtualHost] 队列不存在！queueName=" + queueName);
-            }
-            Exchange exchange = memoryDataCenter.getExchange(exchangeName);
-            if (exchange == null) {
-                throw new MQException("[VirtualHost] 交换机不存在！exchangeName=" + exchangeName);
-            }
-            if (exchange.isDurable() && queue.isDurable()) {
-                diskDataCenter.insertBinding(binding);
-            }
-            memoryDataCenter.insertBinding(binding);
             System.out.println("[VirtualHost] 绑定创建成功！exchangeName=" + exchangeName + ", queueName=" + queueName);
             return true;
         } catch (Exception e) {
@@ -211,20 +228,99 @@ public class VirtualHost {
         queueName = virtualHostName + queueName;
         exchangeName = virtualHostName + exchangeName;
         try {
-            // 1. 获取绑定，看是否存在
-            Binding binding = memoryDataCenter.getBinding(exchangeName, queueName);
-            if (binding == null) {
-                throw new MQException("[VirtualHost] 删除绑定失败！绑定不存在！exchangeName=" + exchangeName + ", queueName=" + queueName);
+            synchronized (exchangeLocker) {
+                synchronized (queueLocker) {
+                    // 1. 获取绑定，看是否存在
+                    Binding binding = memoryDataCenter.getBinding(exchangeName, queueName);
+                    if (binding == null) {
+                        throw new MQException("[VirtualHost] 删除绑定失败！绑定不存在！exchangeName=" + exchangeName + ", queueName=" + queueName);
+                    }
+                    diskDataCenter.deleteBinding(binding);
+                    memoryDataCenter.deleteBinding(binding);
+                    System.out.println("[VirtualHost] 删除绑定成功！");
+                }
             }
-            diskDataCenter.deleteBinding(binding);
-            memoryDataCenter.deleteBinding(binding);
-            System.out.println("[VirtualHost] 删除绑定成功！");
             return true;
         } catch (Exception e) {
             System.out.println("[VirtualHost] 删除绑定失败！");
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean basicPublish(String exchangeName, String routingKey, BasicProperties basicProperties, byte[] body) {
+        try {
+            // 1. 转换交换机的名字
+            exchangeName = virtualHostName + exchangeName;
+            // 2. 检查 routingKey 是否合法
+            if (!router.checkRoutingKey(routingKey)) {
+                throw new MQException("[VirtualHost] routingKey 非法！routingKey=" + routingKey);
+            }
+            // 3. 查找交换机对象
+            Exchange exchange = memoryDataCenter.getExchange(exchangeName);
+            if (exchange == null) {
+                throw new MQException("[VirtualHost] 交换机不存在！exchangeName=" + exchangeName);
+            }
+            // 4. 判定交换机的类型
+            if (exchange.getType() == ExchangeType.DIRECT) {
+                // 按照直接交换机的方式来转发消息
+                // 以 routingKey 作为队列的名字，直接把消息写入指定队列中
+                // 此时，可以无视绑定关系
+                String queueName = virtualHostName + routingKey;
+                // 5. 构造消息对象
+                Message message = Message.createMessageWithId(routingKey, basicProperties, body);
+                // 6. 查找给队列名对应的对象
+                MSGQueue queue = memoryDataCenter.getQueue(queueName);
+                if (queue == null) {
+                    throw new MQException("[VirtualHost] 队列不存在！queueName=" + queueName);
+                }
+                // 7. 队列存在，直接给队列中写入消息
+                sendMessage(queue, message);
+            } else {
+                // 按照 fanout 和 topic 的方式来转发消息
+                // 5. 找到改交换机关联的所有绑定，并遍历这些绑定对象
+                ConcurrentHashMap<String, Binding> bindingsMap = memoryDataCenter.getBindings(exchangeName);
+                for (Map.Entry<String, Binding> entry : bindingsMap.entrySet()) {
+                    // 1) 获取到绑定对象，判断对应的队列是否存在
+                    Binding binding = entry.getValue();
+                    MSGQueue queue = memoryDataCenter.getQueue(binding.getQueueName());
+                    if (queue == null) {
+                        // 此处就不抛出异常了，可能有很多个这样的队列
+                        // 我们不希望因为一个队列的失败，影响到其他队列的消息的传输
+                        System.out.println("[VirtualHost] basicPublish 发送消息时，发现队列不存在！queueName=" + binding.getQueueName());
+                        continue;
+                    }
+                    // 2) 构造消息对象
+                    Message message = Message.createMessageWithId(routingKey, basicProperties, body);
+                    // 3) 判断这个消息是否能转发给该队列
+                    //    如果是 fanout，所有绑定的队列都要转发的
+                    //    如果是 topic，还需要判定一下 bindingKey 和 routingKey 是否匹配
+                    if (!router.route(exchange.getType(), binding, message)) {
+                        continue;
+                    }
+                    // 4) 真正转发消息给队列
+                    sendMessage(queue, message);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println("[VirtualHost] 消息发送失败！");
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void sendMessage(MSGQueue queue, Message message) throws MQException, IOException {
+        // 此处发送消息，就是把消息写入到硬盘 和 内存上
+        int deliverMode = message.getDeliverMode();
+        // deliverMode 为 1 表示不持久化，为 2 表示持久化
+        if (deliverMode == 2) {
+            diskDataCenter.sendMessage(queue, message);
+        }
+        // 写入内存
+        memoryDataCenter.senMessage(queue, message);
+
+        // todo 此处还需要补充一个逻辑，通知消费者可以消费消息了。
     }
 
 }
