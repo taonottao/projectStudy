@@ -1,9 +1,11 @@
 package com.example.mmq.mqserver;
 
+import com.example.mmq.common.Consumer;
 import com.example.mmq.common.MQException;
 import com.example.mmq.mqserver.core.*;
 import com.example.mmq.mqserver.datacenter.DiskDataCenter;
 import com.example.mmq.mqserver.datacenter.MemoryDataCenter;
+import org.apache.coyote.OutputBuffer;
 
 import java.io.IOException;
 import java.util.Map;
@@ -24,6 +26,7 @@ public class VirtualHost {
     private MemoryDataCenter memoryDataCenter = new MemoryDataCenter();
     private DiskDataCenter diskDataCenter = new DiskDataCenter();
     private Router router = new Router();
+    private ConsumerManager consumerManager = new ConsumerManager(this);
 
     // 操作交换机的锁对象
     private final Object exchangeLocker = new Object();
@@ -310,7 +313,7 @@ public class VirtualHost {
         }
     }
 
-    private void sendMessage(MSGQueue queue, Message message) throws MQException, IOException {
+    private void sendMessage(MSGQueue queue, Message message) throws MQException, IOException, InterruptedException {
         // 此处发送消息，就是把消息写入到硬盘 和 内存上
         int deliverMode = message.getDeliverMode();
         // deliverMode 为 1 表示不持久化，为 2 表示持久化
@@ -320,7 +323,35 @@ public class VirtualHost {
         // 写入内存
         memoryDataCenter.senMessage(queue, message);
 
-        // todo 此处还需要补充一个逻辑，通知消费者可以消费消息了。
+        // 此处还需要补充一个逻辑，通知消费者可以消费消息了。
+        consumerManager.notifyConsume(queue.getName());
+    }
+
+    /**
+     *
+     * @param consumerTag 消费者的身份标识
+     * @param queueName
+     * @param autoAck 消息被消费完后，应答的方式，为 true 自动应答，为 false 手动应答
+     * @param consumer 是一个回调函数。此处类型设定为函数式接口，这样后续调用 basicConsume 并且传实参的时候，就可以使用 lambda
+     * @return
+     */
+    public boolean basicConsume(String consumerTag, String queueName, boolean autoAck, Consumer consumer) {
+        // 构造一个 ConsumerEnv 对象，把这个对应的队列找到，再把这个 Consumer 对象添加到该队列中
+        queueName = virtualHostName + queueName;
+        try {
+            consumerManager.addConsumer(consumerTag, queueName, autoAck, consumer);
+            System.out.println("[VirtualHost] basicConsume 成功！queueName=" + queueName);
+            return true;
+        } catch (Exception e) {
+            System.out.println("[VirtualHost] basicConsume 失败！queueName=" + queueName);
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean basicAck() {
+        // todo
+        return false;
     }
 
 }
