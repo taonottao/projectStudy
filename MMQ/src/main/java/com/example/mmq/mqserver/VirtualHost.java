@@ -349,9 +349,31 @@ public class VirtualHost {
         }
     }
 
-    public boolean basicAck() {
-        // todo
-        return false;
+    public boolean basicAck(String queueName, String messageId) {
+        queueName = virtualHostName + queueName;
+        try {
+            Message message = memoryDataCenter.getMessage(messageId);
+            if (message == null) {
+                throw new MQException("[VirtualHost] 要确认的消息不存在！messageId=" + messageId);
+            }
+            MSGQueue queue = memoryDataCenter.getQueue(queueName);
+            if (queue == null) {
+                throw new MQException("[VirtualHost] 要确认的队列不存在！queueName=" + queueName);
+            }
+
+            if (message.getDeliverMode() == 2) {
+                diskDataCenter.deleteMessage(queue,message);
+            }
+            memoryDataCenter.removeMessage(messageId);
+            memoryDataCenter.removeMessageWaitAck(queueName,messageId);
+            System.out.println("[VirtualHost] basicAck 成功！queueName=" + queueName + ", messageId=" + messageId);
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("[VirtualHost] basicAck 失败！queueName=" + queueName + ", messageId=" + messageId);
+            e.printStackTrace();
+            return false;
+        }
     }
 
 }
