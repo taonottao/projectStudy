@@ -7,6 +7,9 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,12 +42,16 @@ public class BrokerServer {
     public void start() throws IOException {
         System.out.println("[BrokerServer] 启动！");
         executorService = Executors.newCachedThreadPool();
-        while (runnable) {
-            Socket clientSocket = serverSocket.accept();
-            // 把处理连接的逻辑丢给这个线程池
-            executorService.submit(() -> {
-                processConnection(clientSocket);
-            });
+        try {
+            while (runnable) {
+                Socket clientSocket = serverSocket.accept();
+                // 把处理连接的逻辑丢给这个线程池
+                executorService.submit(() -> {
+                    processConnection(clientSocket);
+                });
+            }
+        } catch (SocketException e) {
+            System.out.println("[BrokerServer] 服务器停止运行！");
         }
     }
 
@@ -59,7 +66,7 @@ public class BrokerServer {
 
 
     // 通过这个方法，来处理一个客户端的连接
-    // 挨着一个连接中，可能会涉及到多个请求和响应
+    // 在一个连接中，可能会涉及到多个请求和响应
     private void processConnection(Socket clientSocket) {
         try (InputStream inputStream = clientSocket.getInputStream();
              OutputStream outputStream = clientSocket.getOutputStream()) {
@@ -78,7 +85,7 @@ public class BrokerServer {
         } catch (EOFException | SocketException e) {
             // 对于这个代码，DataInputStream 如果读到 EOF，就会抛出一个 EOFException 异常
             // 需要借助这个异常来结束循环
-            System.out.println("[BrokerServer] connection 关闭！客户端额地址：" + clientSocket.getInetAddress().toString()
+            System.out.println("[BrokerServer] connection 关闭！客户端的地址：" + clientSocket.getInetAddress().toString()
                     + ":" + clientSocket.getPort());
         } catch (IOException | ClassNotFoundException | MQException e) {
             System.out.println("[BrokerServer] connection 出现异常！");
@@ -218,6 +225,16 @@ public class BrokerServer {
     }
 
     private void clearClosedSession(Socket clientSocket) {
-        // todo 这里做的事情，主要就是遍历上述 sessions 哈希表，把该被关闭的 socket 对应的键值对，统统删掉
+        // 这里做的事情，主要就是遍历上述 sessions 哈希表，把该被关闭的 socket 对应的键值对，统统删掉
+        List<String> toDeleteChannelId = new ArrayList<>();
+        for (Map.Entry<String, Socket> entry : sessions.entrySet()) {
+            if (entry.getValue() == clientSocket) {
+                toDeleteChannelId.add(entry.getKey());
+            }
+        }
+        for (String channelId : toDeleteChannelId) {
+            sessions.remove(channelId);
+        }
+        System.out.println("[BrokerServer] 清理 session 完成！被清理的 channelId=" + toDeleteChannelId);
     }
 }

@@ -27,7 +27,7 @@ public class VirtualHostTests {
     @BeforeEach
     public void setUp() {
         MmqApplication.context = SpringApplication.run(MmqApplication.class);
-        virtualHost = new VirtualHost("default");想·
+        virtualHost = new VirtualHost("default");
     }
 
     @AfterEach
