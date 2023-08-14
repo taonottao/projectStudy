@@ -72,7 +72,12 @@ public class ProblemController {
             // 参数有误
             return AjaxResult.fail(-1, "参数异常");
         }
-        return AjaxResult.success(problemService.selectOne(id));
+        Problem problem = problemService.selectOne(id);
+        if(problem == null || !StringUtils.hasLength(problem.getTitle())){
+            return AjaxResult.fail(-1, "参数异常");
+        }
+
+        return AjaxResult.success(problem);
     }
 
 

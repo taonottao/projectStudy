@@ -1,0 +1,4 @@
+.\tmp\2cc75dbc-f704-40b7-add7-a328fd75c05d\Solution.java:3: ´íÎó: ĞèÒª';'
+        int[] a = {0,1}
+                       ^
+1 ¸ö´íÎó

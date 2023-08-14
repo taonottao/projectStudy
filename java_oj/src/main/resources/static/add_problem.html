@@ -128,17 +128,17 @@
                 let codeEditor = $("#codeEditor");
                 let testCase = $("#testCase");
                 // 非空校验
-                if (title.val() == "") {
+                if (title.val().trim() == "") {
                     alert("请输入题目名称！！");
                     title.focus();
                     return;
                 }
-                if (level.val() == "") {
+                if (level.val().trim() == "") {
                     alert("请输入题目难度！！");
                     level.focus();
                     return;
                 }
-                if (description.val() == "") {
+                if (description.val().trim() == "") {
                     alert("请输入题目描述！！");
                     description.focus();
                     return;
@@ -148,7 +148,7 @@
                     codeEditor.focus();
                     return;
                 }
-                if (testCase.val() == "") {
+                if (testCase.val().trim() == "") {
                     alert("请输入测试用例！！");
                     testcase.focus();
                     return;

@@ -6,9 +6,8 @@ import com.example.demo.entity.Problem;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+
 
 /**
  * 每次的 “编译+运行” 这个过程，就成为是一个 Task
@@ -19,7 +18,7 @@ import java.util.UUID;
 public class Task {
     // 约定一些常量来表示下面的文件
     // 这个表示所有临时文件所在的目录
-    private static String WORK_DIR = "./tmp/";
+    private static String WORK_DIR = null;
     // 约定代码的类名
     private static String CLASS = null;
     // 约定要编译的代码文件名
@@ -47,6 +46,7 @@ public class Task {
      * 返回值：表示编译运行的结果。编译出错/运行出错/运行正确....
      */
     public Answer compileAndRun(Question question) throws FileNotFoundException {
+
         // 0. 创建临时文件所在目录
         File workDir = new File(WORK_DIR);
         if(!workDir.exists()){

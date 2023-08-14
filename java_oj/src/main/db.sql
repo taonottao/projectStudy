@@ -1,5 +1,5 @@
 drop database if exists oj_database;
-create database oj_database DEFAULT CHARACTER SET utf8mb4;
+create database oj_database DEFAULT CHARACTER SET utf8;
 
 use oj_database;
 

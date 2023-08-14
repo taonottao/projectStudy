@@ -14,6 +14,15 @@ import java.io.InputStream;
  */
 public class CommandUtil {
 
+    /**
+     * 1. 通过 Runtime 类 得到实例，执行 exec、
+     * 2. 利用 process获取到标准输出与标准错误，并分别写入到指定文件中
+     * 3. 等待子进程结束，获取子进程的退出码（状态码），并返回
+     * @param cmd
+     * @param stdoutFile
+     * @param stderrFile
+     * @return
+     */
     public static int run(String cmd, String stdoutFile, String stderrFile){
         try {
             Process process = Runtime.getRuntime().exec(cmd);

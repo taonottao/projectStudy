@@ -26,7 +26,7 @@ public class DemoProducer {
         channel.queueDeclare("testQueue", true, false, false, null);
 
         // 创建一个消息并发送
-        byte[] body = "hello".getBytes();
+        byte[] body = "hello consumer".getBytes();
         boolean ok = channel.basicPublish("testExchange", "testQueue", null, body);
         System.out.println("消息投递完成！ok=" + ok);
 

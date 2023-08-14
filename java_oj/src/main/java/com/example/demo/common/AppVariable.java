@@ -1,7 +1,7 @@
 package com.example.demo.common;
 
 /**
- * 全局变量
+ * 全局常量
  */
 public class AppVariable {
     // 用户 session key

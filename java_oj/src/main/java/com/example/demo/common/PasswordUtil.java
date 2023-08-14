@@ -1,6 +1,5 @@
 package com.example.demo.common;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 

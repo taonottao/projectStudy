@@ -22,6 +22,9 @@
                     <li class="nav-item active">
                         <a class="nav-link page-scroll" href="problem_list.html">主页<span class="sr-only">(current)</span></a>
                     </li>
+                    <li class="nav-item active">
+                        <a class="nav-link page-scroll" href="javascript:logout()" >注销<span class="sr-only">(current)</span></a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -133,6 +136,9 @@
                         if (result != null && result.code == 200) {
                             problem = result.data;
                             makeProblemDetail(result);
+                        }else{
+                            alert("参数错误！")
+                            location.href="problem_list.html";
                         }
                     }
                 });
@@ -181,6 +187,7 @@
                     url: "/problem/compile-run",
                     type: "POST",
                     data: JSON.stringify({"id":id,"templateCode":editor.getValue()}),
+                    // data: {"id":id,"templateCode":editor.getValue()},
                     success: function (result) {
                         let problemResult = document.querySelector("#problemResult");
                         if (result.data.error == 0) {
@@ -192,6 +199,20 @@
                         }
                     }
                 })
+            }
+            function logout(){
+                // alert("0000");
+                if(confirm("确认是否注销？")){
+                    $.ajax({
+                        url: "/user/logout",
+                        type: "GET",
+                        success: function (result) {
+                            if(result != null && result.code == 200){
+                                location.href="login.html";
+                            }
+                        },
+                    })
+                }
             }
         </script>
     </body>
