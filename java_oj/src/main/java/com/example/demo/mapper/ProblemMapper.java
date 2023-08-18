@@ -3,6 +3,7 @@ package com.example.demo.mapper;
 import com.example.demo.entity.Problem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -22,5 +23,7 @@ public interface ProblemMapper {
     List<Problem> selectAll();
 
     Problem selectOne(@Param("id")Integer id);
+
+    int praise(@Param("id") Integer id);
 
 }

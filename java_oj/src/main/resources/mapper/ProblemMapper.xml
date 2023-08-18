@@ -17,4 +17,7 @@
     <select id="selectOne" resultType="com.example.demo.entity.Problem">
         select * from oj_table where id=#{id};
     </select>
+    <update id="praise">
+        update oj_table set likeCount = likeCount + 1 where id=#{id};
+    </update>
 </mapper>

@@ -33,4 +33,8 @@ public class ProblemService {
     public Problem selectOne(Integer id) {
         return problemMapper.selectOne(id);
     }
+
+    public int praise(Integer id) {
+        return problemMapper.praise(id);
+    }
 }

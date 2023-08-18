@@ -65,7 +65,19 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" id="submitButton" onclick="compileRun()">提交</button>
+                <div id="tool">
+                    <button type="button" class="btn btn-primary" id="submitButton" onclick="compileRun()">提交</button>
+<!--                    &nbsp;&nbsp;&nbsp;&nbsp;-->
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <!--                    <button type="button" class="btn btn-primary" id="" onclick="praise()">点赞</button>&nbsp;&nbsp;&nbsp;&nbsp;-->
+                    <a href="javascript:praise()">
+                        <svg id="praise" t="1691997776648" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2342" width="20" height="20">
+                            <path d="M518.4 149.290667c112.597333-80.789333 267.882667-69.397333 368.128 32 53.866667 54.528 84.138667 128.853333 84.138667 206.378666 0 77.525333-30.293333 151.850667-84.096 206.336l-294.421334 299.52a110.976 110.976 0 0 1-80.213333 34.474667 110.72 110.72 0 0 1-79.914667-34.176L137.322667 593.770667C83.562667 539.242667 53.333333 464.981333 53.333333 387.541333s30.229333-151.722667 84.010667-206.272c100.224-101.376 255.530667-112.768 368.128-31.978666l6.442667 4.778666 6.485333-4.778666z m322.602667 76.970666c-84.629333-85.589333-219.157333-88.64-307.328-6.954666l-21.76 20.138666-21.717334-20.138666c-88.192-81.685333-222.72-78.634667-307.306666 6.933333-41.92 42.496-65.557333 100.608-65.557334 161.28 0 60.693333 23.637333 118.805333 65.6 161.344l295.04 300.416c9.045333 9.450667 21.269333 14.72 33.962667 14.72 12.693333 0 24.917333-5.269333 34.261333-15.04L840.96 549.077333c42.005333-42.496 65.685333-100.650667 65.685333-161.408 0-60.736-23.68-118.912-65.664-161.408z" fill="#707070" p-id="2343"></path>
+                        </svg>
+                    </a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span id="likeCount"></span>
+                </div>
                 <div class="row mt-4">
                     <div class="col-sm-12 pb-4">
                         <div class="jumbotron jumbotron-fluid">
@@ -77,8 +89,42 @@
                         </div>
                     </div>
                 </div>
+                <div class="row mt-4">
+                    <div class="col-sm-12 pb-4">
+                        <div class="form-group">
+                            <div class="form-group">
+<!--                                <label for="description">回复</label>-->
+                                <textarea class="form-control" id="commentContent" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary" id="comment" onclick="comment()">评论</button>
+            </div>
+
+        </section>
+        <section class="my-5 pt-5">
+            <div class="container">
+
+                <div class="row mb-5" id="tables">
+                    <div class="col-sm-12">
+                        <div class="mt-3 mb-5">
+                            <h3>评论区</h3>
+                            <table class="table table-striped">
+                                <tbody id="comments">
+<!--                                    <span>111</span><br>-->
+<!--                                    <span>222</span>-->
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+
             </div>
         </section>
+
 
         <!--footer-->
         <section class="py-5 bg-dark">
@@ -102,6 +148,9 @@
         <script src="https://cdn.bootcdn.net/ajax/libs/ace/1.2.9/ext-language_tools.js"></script>
 
         <script type="text/javascript">
+
+
+
 
             function initAce(){
                 // 参数 editor 就对应刚才在 HTML 里加的那个 div 的 id
@@ -136,6 +185,7 @@
                         if (result != null && result.code == 200) {
                             problem = result.data;
                             makeProblemDetail(result);
+                            document.querySelector("#likeCount").innerHTML=result.data.likeCount;
                         }else{
                             alert("参数错误！")
                             location.href="problem_list.html";
@@ -214,6 +264,71 @@
                     })
                 }
             }
+            function praise(){
+                // alert("111");
+                $.ajax({
+                    url: "/problem/praise",
+                    type: "POST",
+                    data: {"id": id},
+                    success: function (result) {
+                        if (result != null && result.code == 200) {
+                            document.querySelector("#likeCount").innerHTML=result.data;
+                        }
+                    },
+                })
+            }
+
+            function comment() {
+                // alert("12456");
+                let commentContent = $("#commentContent");
+                if (commentContent.val().trim() == "") {
+                    alert("内容不能为空！");
+                    commentContent.focus();
+                    return;
+                }
+                jQuery.ajax({
+                    url: "/comment/add",
+                    type: "POST",
+                    data: {"pid":id, "content":commentContent.val()},
+                    success: function (result) {
+                        if (result != null && result.code == 200) {
+                            document.getElementById('comment').value = "";
+                            commentList();
+                        } else {
+                            alert("评论失败，请重试！");
+                        }
+                    },
+                })
+            }
+
+            function commentList() {
+                jQuery.ajax({
+                    url: "/comment/getlist",
+                    type: "POST",
+                    data: {"pid":id},
+                    success: function (result) {
+                        if (result != null && result.code == 200) {
+                            let comments = document.querySelector("#comments");
+                            comments.innerHTML="";
+                            for (let i = 0; i < result.data.length; i++) {
+                                let comment = result.data[i];
+                                let spanUser = document.createElement("span");
+                                spanUser.innerHTML = comment.username + ": ";
+                                comments.appendChild(spanUser);
+                                let br1 = document.createElement("br");
+                                comments.appendChild(br1);
+                                let spanContent = document.createElement("span");
+                                spanContent.innerHTML="&nbsp;&nbsp;&nbsp;"+comment.content;
+                                comments.appendChild(spanContent);
+                                let br2 = document.createElement("br");
+                                comments.appendChild(br2);
+                            }
+                        }
+
+                    },
+                })
+            }
+            commentList();
         </script>
     </body>
 </html>

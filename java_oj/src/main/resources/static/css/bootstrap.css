@@ -86,7 +86,9 @@
 *::before,
 *::after {
   box-sizing: border-box; }
-
+.praise{
+  text-align: center;
+}
 html {
   font-family: sans-serif;
   line-height: 1.15;

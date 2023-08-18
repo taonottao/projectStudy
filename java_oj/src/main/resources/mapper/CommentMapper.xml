@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.CommentMapper">
+
+    <insert id="add">
+        insert into comment(username, pid, content, likeCount)
+        values (#{username}, #{pid}, #{content}, #{likeCount})
+    </insert>
+
+    <select id="selectAllByPid" resultType="com.example.demo.entity.Comment">
+        select * from comment where pid=#{pid} order by publishTime desc
+    </select>
+
+    <select id="getAllComments" resultType="com.example.demo.entity.Comment">
+        select * from comment
+    </select>
+
+    <delete id="deleteComment">
+        delete from comment where id=#{id}
+    </delete>
+
+    <select id="selectOneById" resultType="com.example.demo.entity.Comment">
+        select * from comment where id = #{id}
+    </select>
+
+</mapper>

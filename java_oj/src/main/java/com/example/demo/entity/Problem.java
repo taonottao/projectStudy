@@ -15,4 +15,6 @@ public class Problem {
     private String description;
     private String templateCode;
     private String testCode;
+    private int likeCount;
+    private int commentCount;
 }

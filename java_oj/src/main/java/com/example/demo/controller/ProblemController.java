@@ -158,4 +158,19 @@ public class ProblemController {
         // 5. 把这个 byte[] 的内容构造成一个 String
         return new String(buffer, "utf8");
     }
+
+    @RequestMapping("/praise")
+    public AjaxResult praise(Integer id) {
+        System.out.println(id);
+        if (id == null || id < 0) {
+            return AjaxResult.fail(-1, "参数非法！");
+        }
+        Problem problem = problemService.selectOne(id);
+        if (problem == null) {
+            return AjaxResult.fail(-1, "题目序号参数非法！");
+        }
+        problemService.praise(id);
+        problem.setLikeCount(problem.getLikeCount() + 1);
+        return AjaxResult.success(200, problem.getLikeCount());
+    }
 }
