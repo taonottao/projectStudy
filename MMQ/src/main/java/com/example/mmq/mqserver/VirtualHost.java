@@ -281,7 +281,7 @@ public class VirtualHost {
                 sendMessage(queue, message);
             } else {
                 // 按照 fanout 和 topic 的方式来转发消息
-                // 5. 找到改交换机关联的所有绑定，并遍历这些绑定对象
+                // 5. 找到该交换机关联的所有绑定，并遍历这些绑定对象
                 ConcurrentHashMap<String, Binding> bindingsMap = memoryDataCenter.getBindings(exchangeName);
                 for (Map.Entry<String, Binding> entry : bindingsMap.entrySet()) {
                     // 1) 获取到绑定对象，判断对应的队列是否存在
@@ -321,7 +321,7 @@ public class VirtualHost {
             diskDataCenter.sendMessage(queue, message);
         }
         // 写入内存
-        memoryDataCenter.senMessage(queue, message);
+        memoryDataCenter.sendMessage(queue, message);
 
         // 此处还需要补充一个逻辑，通知消费者可以消费消息了。
         consumerManager.notifyConsume(queue.getName());

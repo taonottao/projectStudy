@@ -23,9 +23,9 @@ public class Exchange {
     // 该交换机是否要持久化存储，true 表示需要， false 表示不需要
     private boolean durable = false;
     // 如果当前交换机没人使用了，就会自动删除
-    // 这个属性暂时放在这里，在后续的代码中并没有真的实现这个自动删除功能，属于锦上添花
+    // 这个属性暂时放在这里，没有真的实现这个自动删除功能，属于锦上添花
     private boolean autoDelete = false;
-    // arguments 表示的是创建交换机时指定一些额外的参数选项，后续代码也是没有真正实现。
+    // arguments 表示的是创建交换机时指定一些额外的参数选项，也是没有真正实现。
     // 为了把这个 arguments 存到数据库中，需要把 Map 转成 json 格式的字符串
     private Map<String, Object> arguments = new HashMap<>();
 

@@ -123,7 +123,7 @@ public class MemoryDataCenterTests {
         List<Message> excMessages = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Message message = createTestMessage("testMessage" + i);
-            memoryDataCenter.senMessage(queue, message);
+            memoryDataCenter.sendMessage(queue, message);
             excMessages.add(message);
         }
 

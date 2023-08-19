@@ -132,7 +132,7 @@ public class MemoryDataCenter {
     }
 
     // 发送消息到指定队列
-    public void senMessage(MSGQueue queue, Message message) {
+    public void sendMessage(MSGQueue queue, Message message) {
 
         LinkedList<Message> messages = queueMessageMap.computeIfAbsent(queue.getName(),
                 k -> new LinkedList<>());

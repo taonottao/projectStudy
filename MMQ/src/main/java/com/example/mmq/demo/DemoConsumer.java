@@ -18,16 +18,17 @@ public class DemoConsumer {
     public static void main(String[] args) throws IOException, MQException, InterruptedException {
         System.out.println("启动消费者");
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("47.113.225.72");
+//        factory.setHost("47.113.225.72");
+        factory.setHost("127.0.0.1");
         factory.setPort(9090);
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
-        channel.exchangeDeclare("testExchange", ExchangeType.DIRECT, true, false, null);
-        channel.queueDeclare("testQueue", true, false, false, null);
-
-        channel.basicConsume("testQueue", true, new Consumer() {
+        channel.exchangeDeclare("testExchange1", ExchangeType.DIRECT, true, false, null);
+        channel.queueDeclare("testQueue1", true, false, false, null);
+//        channel.queueBind("testQueue1", "testExchange1", "testQueue1");
+        channel.basicConsume("testQueue1", true, new Consumer() {
             @Override
             public void handleDelivery(String consumerTag, BasicProperties basicProperties, byte[] body) throws MQException, IOException {
                 System.out.println("[消费数据]开始！");
@@ -38,10 +39,15 @@ public class DemoConsumer {
                 System.out.println("[消费数据]结束！");
             }
         });
-
         // 由于消费者也不知道生产者要生产多少，就在这里通过这个循环模拟一直等待消息
-        while (true) {
+        int i = 0;
+
+        while (i < 100) {
             Thread.sleep(500);
+            i++;
         }
+        Thread.sleep(500);
+        channel.close();
+        connection.close();
     }
 }

@@ -9,7 +9,6 @@ import com.example.mmq.mqserver.core.Message;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * 使用这个类来管理所有硬盘上的数据
