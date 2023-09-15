@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<div class="container">
+    <div class="row">
+        <!-- BEGIN TOP BAR LEFT PART -->
+        <div class="col-md-6 col-sm-6 additional-shop-info">
+            <!--
+            <ul class="list-unstyled list-inline">
+                <li><i class="fa fa-phone"></i><span>+1 456 6717</span></li>
+                <li class="shop-currencies">
+                    <a href="javascript:void(0);">€</a>
+                    <a href="javascript:void(0);">£</a>
+                    <a href="javascript:void(0);" class="current">$</a>
+                </li>
+                <li class="langs-block">
+                    <a href="javascript:void(0);" class="current">English </a>
+                    <div class="langs-block-others-wrapper"><div class="langs-block-others">
+                      <a href="javascript:void(0);">French</a>
+                      <a href="javascript:void(0);">Germany</a>
+                      <a href="javascript:void(0);">Turkish</a>
+                    </div></div>
+                </li>
+            </ul>
+            -->
+        </div>
+        <!-- END TOP BAR LEFT PART -->
+        <!-- BEGIN TOP BAR MENU -->
+        <div class="col-md-6 col-sm-6 additional-nav" id="topapp">
+            <ul class="list-unstyled list-inline pull-right" >
+
+                <li v-if="sessionmember==''"><a href="register.html">注册</a></li>
+                <li v-if="sessionmember==''"><a href="login.html">登录</a></li>
+                <li v-if="sessionmember!=''" style="border-right: 0px;">
+                   欢迎登录! &nbsp;&nbsp;{{sessionmember.tname}}
+                </li>
+                <li v-if="sessionmember!=''"><a href="orderlist.html">订单信息</a></li>
+                <li v-if="sessionmember!=''"><a href="favlist.html">我的收藏</a></li>
+                <li v-if="sessionmember!=''"><a href="applylist.html">售后信息</a></li>
+                <li v-if="sessionmember!=''"><a href="memberedit.html">个人信息</a></li>
+                <li v-if="sessionmember!=''"><a href="javascript:;" @click="logout()">退出</a></li>
+            </ul>
+        </div>
+        <!-- END TOP BAR MENU -->
+    </div>
+</div>
+
+<script type="text/javascript" src="axios/vue.js"></script>
+<script type="text/javascript" src="axios/axios.min.js"></script>
+<script type="text/javascript" src="axios/qs.js"></script>
+<script type="text/javascript" src="axios/getUrlParams.js"></script>
+<script type="text/javascript" src="layer/layer.js"></script>
+
+<script type="text/javascript">
+    var qs = Qs
+    var topapp = new Vue({
+        el:"#topapp",
+        data:{
+            sessionmember:"",
+        },
+        mounted(){
+            this.getsessionmember()
+        },
+        methods:{
+            getsessionmember(){
+                axios.post('checkmember',qs.stringify({
+                })).then(response =>{
+                    if(response.data.data==200){
+                        this.sessionmember = response.data.sessionmember
+                    }
+                }).catch(error =>{
+                    console.log(error)
+                })
+            },
+            logout(){
+
+                layer.confirm('是否注销账号？', {
+                    btn: ['退出','取消'] //按钮
+                }, function(){
+                    axios.post('memberExit',qs.stringify({
+                    })).then(response =>{
+                        location.replace("index.html")
+                    }).catch(error =>{
+                        console.log(error)
+                    })
+                }, function(){
+
+                });
+
+            }
+
+        }
+    })
+</script>
+
+
+</html>

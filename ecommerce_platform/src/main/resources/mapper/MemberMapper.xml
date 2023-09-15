@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.ecommerce_platform.mapper.MemberMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.ecommerce_platform.entity.Member">
+        <id column="id" property="id" />
+        <result column="uname" property="uname" />
+        <result column="upass" property="upass" />
+        <result column="tname" property="tname" />
+        <result column="sex" property="sex" />
+        <result column="birthtime" property="birthtime" />
+        <result column="tel" property="tel" />
+        <result column="email" property="email" />
+        <result column="delstatus" property="delstatus" />
+        <result column="filename" property="filename" />
+        <result column="status" property="status" />
+        <result column="idcard" property="idcard" />
+        <result column="utype" property="utype" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, uname, upass, tname, sex, birthtime, tel, email, delstatus, filename, status, idcard, utype
+    </sql>
+
+    <select id="login" resultType="com.example.ecommerce_platform.entity.Member">
+        select * from member where uname=#{uname} and upass=#{upass}
+    </select>
+
+</mapper>
