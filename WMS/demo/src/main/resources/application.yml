@@ -7,8 +7,28 @@ spring:
     username: root
     password: wangtao
     driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: xxl-job-executor-frozen
+  # no web
+  #spring.main.web-environment=false
 
 #mybatis-plus配置控制台打印完整带参数SQL语句
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+  ### xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+xxl:
+  job:
+    admin:
+      addresses: http://127.0.0.1:9090/xxl-job-admin
+    accessToken: default_token
+    executor:
+      appname: a123456
+      address:
+      ip:
+      port: 9999
+      logpath: /data/applogs/xxl-job/jobhandler
+      logretentiondays: 30
+

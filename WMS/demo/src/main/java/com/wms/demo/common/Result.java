@@ -36,4 +36,8 @@ public class Result {
     public static Result fail() {
         return result(400, "失败", 0L, null);
     }
+
+    public static Result isFrozen() {
+        return result(401, "", 0L, null);
+    }
 }

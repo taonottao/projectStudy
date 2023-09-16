@@ -3,8 +3,6 @@ package com.wms.demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.api.R;
-import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wms.demo.common.QueryPageParam;
 import com.wms.demo.common.Result;
@@ -81,15 +79,33 @@ public class UserController {
     // 登录
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
+
         List<User> list = userService.lambdaQuery().eq(User::getNo, user.getNo())
-                .eq(User::getPassword, user.getPassword()).list();
+                .eq(User::getPassword, user.getPassword())
+                .lt(User::getErrCount, 5).list();
         if (list.size() > 0) {
             User user1 = list.get(0);
+            user1.setErrCount(0);
+            userService.updateById(user1);
             List<Menu> menuList = menuService.lambdaQuery().like(Menu::getMenuright, user1.getRoleId()).list();
             HashMap map = new HashMap();
             map.put("user", user1);
             map.put("menu", menuList);
             return Result.suc(map);
+        } else {
+            User tmp = userService.getByNo(user.getNo());
+            System.out.println(tmp.getId());
+            if (tmp != null) {
+                int count = tmp.getErrCount();
+                count++;
+                tmp.setErrCount(count);
+                if (count >= 5) {
+                    tmp.setNoStatus(1);
+                    userService.updateById(tmp);
+                    return Result.isFrozen();
+                }
+                userService.updateById(tmp);
+            }
         }
 
         return Result.fail();

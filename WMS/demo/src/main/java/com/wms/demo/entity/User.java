@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -52,5 +54,12 @@ public class User implements Serializable {
     @TableField("isValid")
     private String isvalid;
 
+//    @TableField(value = "err_count")
+    private int errCount;
+
+    private LocalDateTime errTime;
+
+    // 0 代表正常状态， 1 代表冻结状态
+    private int noStatus;
 
 }

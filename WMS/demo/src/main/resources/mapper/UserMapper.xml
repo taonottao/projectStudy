@@ -26,4 +26,8 @@
         select * from user ${ew.customSqlSegment}
     </select>
 
+    <select id="getByNo" resultType="com.wms.demo.entity.User">
+        select * from user where no=#{no}
+    </select>
+
 </mapper>
