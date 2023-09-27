@@ -18,7 +18,7 @@
     </properties>
 
     <dependencies>
-<!--        添加单签父工程下的子模块依赖-->
+<!--        添加当前父工程下的子模块依赖-->
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>mtl-bean</artifactId>

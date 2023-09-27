@@ -1,0 +1,4 @@
+com\example\mtl\service\BrandService.class
+com\example\mtl\service\impl\BrandServiceImpl.class
+com\example\mtl\service\impl\CategoryServiceImpl.class
+com\example\mtl\service\CategoryService.class

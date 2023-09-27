@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt.mtl.dao.BrandDAO">
+
+    <resultMap id="brandMap" type="Brand">
+        <id column="brand_id" property="brandId"/>
+        <result column="brand_name" property="brandName"/>
+        <result column="brand_logo" property="brandLogo"/>
+        <result column="brand_desc" property="brandDesc"/>
+        <result column="create_time" property="createTime"/>
+        <result column="brand_status" property="brandStatus"/>
+    </resultMap>
+
+    <select id="selectBrandByCategoryId" resultMap="brandMap">
+        select brand_id, brand_name, brand_logo, brand_desc, create_time, brand_status
+        from tb_brand b join tb_category_brand cb
+        on b.brand_id = cb.fk_brand_id where cb.fk_category_id = #{categoryId} and b.brand_status = 1;
+    </select>
+
+</mapper>

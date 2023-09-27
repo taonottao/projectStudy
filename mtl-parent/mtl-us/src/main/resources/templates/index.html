@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <base th:href="${#request.getContextPath()}+'/'">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>手机回收_二手手机,旧手机,废旧手机回收交易,价格评估_回购网_第1页</title>
-    <meta name="keywords" content="手机回收,二手手机回收,旧手机回收,废旧手机回收,二手手机交易,二手手机价格,二手手机估价,手机回收价格"/>
-    <meta name="description" content="回购网二手手机回收，为您提供各种品牌的二手手机、旧手机、废旧手机的回收交易、专业检测、价格评估服务，给您一个满意的二手手机回收价格。"/>
+    <meta name="keywords"
+          content="手机回收,二手手机回收,旧手机回收,废旧手机回收,二手手机交易,二手手机价格,二手手机估价,手机回收价格"/>
+    <meta name="description"
+          content="回购网二手手机回收，为您提供各种品牌的二手手机、旧手机、废旧手机的回收交易、专业检测、价格评估服务，给您一个满意的二手手机回收价格。"/>
     <meta name="baidu-site-verification" content="IpuQLFxZiC"/>
     <meta name="chinaz-site-verification" content="081e7651-48c6-4c2f-a569-99321685eab1"/>
     <meta name="mobile-agent" content="format=html5;url=http://m.ihuigo.com/ershoushouji.html">
@@ -66,42 +68,6 @@
             <ul id='login_show'>
                 <li><a href="members/login.html" rel="nofollow">登录</a></li>
                 <li><a href="members/register.html" rel="nofollow">注册</a></li>
-                <!--                <li class="item-daohang"><a class="item-daohang-nav" href="service/map.html" rel="nofollow"
-                                                            title="回购网手机回收网站导航">网站导航</a>
-                                    <div class="sub-nav2">
-                                        <ul>
-                                            <li>
-                                                <dl>
-                                                    <dt>主要频道</dt>
-                                                    <dd><a target="_blank" href="goods.html" title="闲置二手手机回收价格评估">旧机回收</a></dd>
-                                                    <dd><a target="_blank" href="youpin.html" title="二手优品手机抢购">二手优品</a></dd>
-                                                    <dd><a target="_blank" href="huanxin.html" title="二手手机以旧换新活动">旧机换新</a></dd>
-                                                </dl>
-                                            </li>
-                                            <li>
-                                                <dl>
-                                                    <dt>企业服务</dt>
-                                                    <dd><a href="service/joinus.html" rel="nofollow" target="_blank" title="手机回收企业代理合作">企业代理</a>
-                                                    </dd>
-                                                    <dd><a href="service/joinus.html" rel="nofollow" target="_blank"
-                                                           title="手机回收市场校园代理合作">校园代理</a></dd>
-                                                </dl>
-                                            </li>
-                                            <li>
-                                                <dl>
-                                                    <dt>客户服务</dt>
-                                                    <dd><a href="service/terms.html" rel="nofollow" target="_blank" title="回购网手机回收服务条款">服务条款</a>
-                                                    </dd>
-                                                    <dd><a href="service/suggestions.html" rel="nofollow" target="_blank"
-                                                           title="手机回收问题投诉与建议">投诉建议</a></dd>
-                                                    <dd><a onClick="zixunserver('index/zixunserver.html');" href="javascript:void(0)"
-                                                           rel="nofollow" target="_blank">在线客服</a></dd>
-                                                </dl>
-                                            </li>
-                                            <div class="clear"></div>
-                                        </ul>
-                                    </div>
-                                </li>-->
             </ul>
         </div>
         <div class="clear"></div>
@@ -116,10 +82,11 @@
                 <!--<span id="nav_xz">&nbsp;</span>-->闲置回收</a>
             <a title="二手手机以旧换新活动" href="huanxin.html"><!--<span id="nav_hx">&nbsp;</span>-->旧机换新<img
                     src="images/new_images/new.png"/></a>
-            <a title="二手优品手机抢购" href="youpin.html"><!--<span id="nav_hx">&nbsp;</span>-->二手优品</a><a target="_blank"
-                                                                                                    href="kucun.html"
-                                                                                                    rel="nofollow"
-                                                                                                    style="margin-right:0;"><img
+            <a title="二手优品手机抢购" href="youpin.html"><!--<span id="nav_hx">&nbsp;</span>-->二手优品</a><a
+                target="_blank"
+                href="kucun.html"
+                rel="nofollow"
+                style="margin-right:0;"><img
                 src="images/new_images/kc.gif" style="vertical-align:middle"></a>
         </div>
     </div>
@@ -161,23 +128,105 @@
         <div class="side_left">
             <dl class="side_list">
                 <dt>搜索结果分类</dt>
-                <dd class="item_on"><a href="ershoushouji.html" title="手机回收价格评估"><b
-                        class="item1">&nbsp;</b><em>手机</em><span>&nbsp;</span></a></dd>
-                <dd class=""><a href="ershoupingguo.html" title="苹果系列回收价格评估"><b
-                        class="item2">&nbsp;</b><em>苹果系列</em><span>&nbsp;</span></a></dd>
-                <dd class=""><a href="ershoupingban.html" title="平板电脑回收价格评估"><b
-                        class="item3">&nbsp;</b><em>平板电脑</em><span>&nbsp;</span></a></dd>
-                <dd class=""><a href="ershoubijiben.html" title="笔记本回收价格评估"><b
-                        class="item4">&nbsp;</b><em>笔记本</em><span>&nbsp;</span></a></dd>
-                <dd class=""><a href="ershoushumaxiangji.html" title="数码相机回收价格评估"><b
-                        class="item5">&nbsp;</b><em>数码相机</em><span>&nbsp;</span></a></dd>
-                <dd class=""><a href="ershouyouxiji.html" title="游戏机回收价格评估"><b
-                        class="item6">&nbsp;</b><em>游戏机</em><span>&nbsp;</span></a></dd>
-                <dd class=""><a href="ershoujingtou.html" title="镜头回收价格评估"><b class="item7">&nbsp;</b><em>镜头</em><span>&nbsp;</span></a>
-                </dd>
-                <dd class="last"><a href="wurenji.html" title="无人机回收价格评估"><b class="item8">&nbsp;</b><em>无人机</em><span>&nbsp;</span></a>
+                <dd class="item_on" th:each="category:${categoryList}">
+                    <a title="手机回收价格评估" th:onclick="'requestBrandList('+${category.categoryId}+')'">
+                        <b th:class="${category.categoryIcon}">&nbsp;</b>
+                        <em th:text="${category.categoryName}"></em><span>&nbsp;</span>
+                    </a>
                 </dd>
             </dl>
+
+            <script type="text/javascript" th:inline="javascript">
+                requestBrandList([[${categoryList[0].categoryId}]]);
+
+                function requestBrandList(cid) {
+                    console.log(cid);
+                    $.get("brand/list", {categoryId: cid}, function (res) {
+                        console.log(res);
+                        if (res.code == 0) {
+                            var arr = res.data;
+                            $("#brandListDiv").html("");
+                            for (var i = 0; i < arr.length; i++) {
+                                var brand = arr[i];
+                                $("#brandListDiv").append("<a onclick='requestGoodsList(" + brand.brandId + ",1)'>" + brand.brandName + "</a>");
+                                if (i < arr.length - 1) {
+                                    $("#brandListDiv").append("<em>1</em>");
+                                }
+                            }
+
+                            // 默认加载第一个品牌下的商品
+                            requestGoodsList(arr[0].brandId,1);
+                        } else if (res.code == 1) {
+                            alert("加载品牌列表失败！")
+                        }
+                    }, "json");
+                }
+
+                function requestGoodsList(bid, pNum) {
+                    $.get("goods/listByBrand", {brandId: bid, pageNum: pNum}, function (res) {
+                        if (res.code == 0) {
+                            // 1. 显示商品列表
+                            var goodsArr = res.data.list;
+                            $("#goodsListDl").html("");
+                            // $("#pageInfoDiv").html("");
+                            for (var i = 0; i < goodsArr.length; i++) {
+                                var goods = goodsArr[i];
+                                var str = "<dd style='margin-top: 15px'>" +
+                                    "                        <div class='pic_list_box' style='border: 1px solid lightgray; margin: 5px'>\n" +
+                                    "                            <div class='pic_list_img'>" +
+                                    "                                <a href='info.html' " +
+                                    "                                    <img src='" + goods.goodImg + "' width='180'\n" +
+                                    "                                    height='135' />" +
+                                    "                                </a>" +
+                                    "                            </div>" +
+                                    "                            <p class='name'>" + goods.goodName + "</p>" +
+                                    "                            <p class='price'>最高回收价：<em>￥" + goods.goodCost / 100.0 + "</em></p>" +
+                                    "                            <p class='pinggu'>" +
+                                    "                                <a href='basicInfo/list?goodsId="+goods.goodId+"'></a>" +
+                                    "                            </p>" +
+                                    "                            <div class='hot'><img src='images/hot.png'/></div>" +
+                                    "                        </div>" +
+                                    "                    </dd>";
+                                $("#goodsListDl").append(str);
+                            }
+
+                            // 2. 分页
+                            var pageInfo = res.data;
+                            // 显示首页和上一页
+                            var firstStr = pageInfo.pageNum == 1 ? "<span class='next_link'>首页</span>"
+                                : "<span><a onclick='requestGoodsList("+bid+","+1+")'>首页</a></span>";
+                            $("#pageInfoDiv").append(firstStr);
+
+                            var preStr = pageInfo.pageNum == 1 ? "<span class='next_link'>上一页</span>"
+                                : "<span><a onclick='requestGoodsList("+bid+","+pageInfo.prePage+")'>上一页</a></span>";
+                            $("#pageInfoDiv").append(preStr);
+
+                            // 显示页码
+                            for (var j = 1; j <= pageInfo.pageCount; j++) {
+                                if (j == pageInfo.pageNum) {
+                                    $("#pageInfoDiv").append("<span class='cur_link'>" + j + "</span>")
+                                } else {
+                                    $("#pageInfoDiv").append("<span><a onclick='requestGoodsList("+bid+","+j+")'>" + j + "</a></span>");
+                                }
+                            }
+                            // 显示下一页和尾页
+                            var nextStr = pageInfo.pageNum == pageInfo.pageCount ? "<span class='next_link'>下一页</span>"
+                                : "<span><a onclick='requestGoodsList("+bid+","+pageInfo.nextPage+")'>下一页</a></span>";
+                            $("#pageInfoDiv").append(nextStr);
+
+                            var lastStr = pageInfo.pageNum == pageInfo.pageCount ? "<span class='next_link'>尾页</span>"
+                                : "<span><a onclick='requestGoodsList("+bid+","+pageInfo.pageCount+")'>尾页</a></span>";
+                            $("#pageInfoDiv").append(lastStr);
+
+                            // 显示总商品数
+                            $("#countEm").html(pageInfo.count);
+                        } else {
+                            alert("加载商品信息失败!")
+                        }
+                    }, "json");
+                }
+            </script>
+
             <dl class="side_hot">
                 <dt>最近热门回收</dt>
                 <dd>
@@ -203,45 +252,50 @@
             <div class="brand">
                 <div class="title2"><span><a href="goods.html"><strong>手机</strong> 品牌</a></span></div>
                 <div class="brand_main">
-                    <div class="brand_hot">
-                        <a href="ershouhtc.html">HTC</a>
-                        <em>|</em><a href="ershoumeizu.html">魅族</a>
-                    </div>
-                    <div class="brand_hots">
-                        <a href="ershoububugao.html">vivo</a>
-                        <em>|</em><a href="ershoulianxiang.html">联想</a>
+                    <div class="brand_hot" id="brandListDiv">
+                        <!--                        <a href="ershouhtc.html">HTC</a><em>|</em><a href="ershoumeizu.html">魅族</a>-->
+
                     </div>
                 </div>
             </div>
             <!--全部手机品牌-->
             <div class="search_main">
-                <div class="search_title"><h2 class="list-item">手机回收</h2>&nbsp;&nbsp;&nbsp;&nbsp;<em></em>搜索到<em>
-                    1852 </em>个结果
+                <div class="search_title">
+                    <h2 class="list-item">手机回收</h2>&nbsp;&nbsp;&nbsp;&nbsp;<em></em>搜索到<em id="countEm"></em>个结果
                 </div>
-                <dl class="pic_list">
-                    <dd>
-                        <div class="pic_list_box">
-                            <div class="pic_list_img"><a href="info.html" title="iphone 7回收价格评估"><img
-                                    src="http://img.ihuigo.com/goods/739b3910f020832305a94a6a96eec952.jpg" width="180"
-                                    height="135" alt="iphone 7闲置回收价格评估"/></a></div>
-                            <p class="name">iphone 7</p>
-                            <!--<p class="price">回收价：<em>￥3080</em></p>-->
-                            <p class="pinggu"><a href="goods/info/21025.html" title="在线评估iphone 7回收价格"><!--去评估--></a>
-                            </p>
-                            <div class="hot"><img src="images/hot.png"/></div>
-                        </div>
-                    </dd>
+                <dl class="pic_list" id="goodsListDl">
+                    <!--                    <dd style="margin-top: 15px">-->
+                    <!--                        <div class="pic_list_box" style="border: 1px solid lightgray; margin: 5px">-->
+                    <!--                            <div class="pic_list_img">-->
+                    <!--                                <a href="info.html" title="iphone 7回收价格评估">-->
+                    <!--                                    <img src="http://img.ihuigo.com/goods/739b3910f020832305a94a6a96eec952.jpg" width="180"-->
+                    <!--                                    height="135" alt="iphone 7闲置回收价格评估"/>-->
+                    <!--                                </a>-->
+                    <!--                            </div>-->
+                    <!--                            <p class="name">iphone 7</p>-->
+                    <!--                            <p class="price">回收价：<em>￥3080</em></p>-->
+                    <!--                            <p class="pinggu">-->
+                    <!--                                <a href="goods/info/21025.html" title="在线评估iphone 7回收价格">&lt;!&ndash;去评估&ndash;&gt;</a>-->
+                    <!--                            </p>-->
+                    <!--                            <div class="hot"><img src="images/hot.png"/></div>-->
+                    <!--                        </div>-->
+                    <!--                    </dd>-->
                     <div class="clear"></div>
                 </dl>
                 <div class="clear"></div>
                 <div class="pageStr">
-                    <div class="ihuigo_page"><span class="cur_link">1</span><span><a
-                            href="ershoushouji/2.html">2</a></span><span><a
-                            href="ershoushouji/3.html">3</a></span><span><a
-                            href="ershoushouji/4.html">4</a></span><span><a
-                            href="ershoushouji/5.html">5</a></span><span><a href="ershoushouji/6.html">6</a></span><span
-                            class="next_link"><a href="ershoushouji/2.html">下一页</a></span><span class="last_link"><a
-                            href="ershoushouji/232.html">尾页</a></span></div>
+                    <div class="ihuigo_page" id="pageInfoDiv">
+                        <!--                        <span class="cur_link">1</span>-->
+                        <!--                        <span>-->
+                        <!--                        <a href="ershoushouji/2.html">2</a></span><span>-->
+                        <!--                        <a href="ershoushouji/3.html">3</a></span><span>-->
+                        <!--                        <a href="ershoushouji/4.html">4</a></span><span>-->
+                        <!--                        <a href="ershoushouji/5.html">5</a></span><span>-->
+                        <!--                        <a href="ershoushouji/6.html">6</a></span><span class="next_link">-->
+                        <!--                        <a href="ershoushouji/2.html">下一页</a></span><span class="last_link">-->
+                        <!--                        <a href="ershoushouji/232.html">尾页</a>-->
+                        <!--                        </span>-->
+                    </div>
                 </div>
             </div>
         </div>
@@ -263,14 +317,19 @@
     <div class="page2">
         <dl class="foot_list1">
             <dt>关于我们</dt>
-            <dd><a href="service/about.html" rel="nofollow" target="_blank" title="回购网高价在线手机回收平台">关于回购网</a></dd>
-            <dd><a href="service/contact.html" target="_blank" rel="nofollow" title="回购网手机回收联系方式">联系我们</a></dd>
-            <dd><a href="service/join.html" target="_blank" rel="nofollow" title="回购网长期招聘爱好手机回收行业的小伙伴">人才招聘</a></dd>
+            <dd><a href="service/about.html" rel="nofollow" target="_blank"
+                   title="回购网高价在线手机回收平台">关于回购网</a></dd>
+            <dd><a href="service/contact.html" target="_blank" rel="nofollow"
+                   title="回购网手机回收联系方式">联系我们</a></dd>
+            <dd><a href="service/join.html" target="_blank" rel="nofollow"
+                   title="回购网长期招聘爱好手机回收行业的小伙伴">人才招聘</a></dd>
         </dl>
         <dl class="foot_list2">
             <dt>服务</dt>
-            <dd><a href="service/terms.html" target="_blank" rel="nofollow" title="手机回收常见问题与解答">服务条款</a></dd>
-            <dd><a href="service/suggestions.html" target="_blank" rel="nofollow" title="感谢您对手机回收相关问题的投诉与建议">投诉建议</a>
+            <dd><a href="service/terms.html" target="_blank" rel="nofollow" title="手机回收常见问题与解答">服务条款</a>
+            </dd>
+            <dd><a href="service/suggestions.html" target="_blank" rel="nofollow"
+                   title="感谢您对手机回收相关问题的投诉与建议">投诉建议</a>
             </dd>
             <dd><a href="service/map.html" target="_blank" title="回购网的网站地图导航">网站地图</a></dd>
         </dl>
@@ -278,7 +337,8 @@
             <dt>客服热线</dt>
             <dd>
                 <p><img src="images/new_images/tel.png"/></p>
-                <div><a href="html/hzsr.html" rel="nofollow" target="_blank" class="rk1" title="手机回收业务大客户登录入口">大客户入口</a><a
+                <div><a href="html/hzsr.html" rel="nofollow" target="_blank" class="rk1"
+                        title="手机回收业务大客户登录入口">大客户入口</a><a
                         href="html/hzs.html" rel="nofollow" target="_blank" class="rk2" title="手机回收合作商登录入口">合作商入口</a>
                 </div>
             </dd>

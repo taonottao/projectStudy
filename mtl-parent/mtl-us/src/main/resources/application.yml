@@ -11,7 +11,7 @@ mybatis:
   mapper-locations: classpath:mappers/*Mapper.xml #在 mtl-dao 子工程
   configuration: # 配置打印 MyBatis 执行的 SQL
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  type-aliases-package: com.wt.mtl.beans  #在 mtl-bean子工程
+  type-aliases-package: com.example.mtl.beans  #在 mtl-bean子工程
 # 配置打印 MyBatis 执行的 SQL
 logging:
   level:

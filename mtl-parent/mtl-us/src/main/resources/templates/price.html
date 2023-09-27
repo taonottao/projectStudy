@@ -1,6 +1,7 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www/thymeleaf.org">
 <head>
+  <base th:href="${#request.getContextPath()}+'/'">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>iphone 7-回购网 -  手机回收网 | 二手手机交易 | 笔记本回收 | 平板回收</title>
 <meta name="keywords" content="iphone 7 iphone7 7 苹果7 苹果 7" />
@@ -10,23 +11,23 @@
 <meta name="mobile-agent" content="format=html5;url=http://m.ihuigo.com/goods/show_price/00676fdb772fb0a63796fb07b4f134ef.html">
 <meta name="applicable-device" content="pc">    
 <link rel="alternate" media="only screen and(max-width: 640px)"     href="http://m.ihuigo.com/goods/show_price/00676fdb772fb0a63796fb07b4f134ef.html" > 
-<link href="../favicon.ico" type=image/x-icon rel="Icon">
-<link href="../css/new_css/global.css" rel="stylesheet" type="text/css">
-<script src="../js/new_js/jquery-1.4.2.js" type="text/javascript"></script>
-<script src="../js/new_js/new_public.js" type="text/javascript"></script>
+<link href="favicon.ico" type=image/x-icon rel="Icon">
+<link href="css/new_css/global.css" rel="stylesheet" type="text/css">
+<script src="js/new_js/jquery-1.4.2.js" type="text/javascript"></script>
+<script src="js/new_js/new_public.js" type="text/javascript"></script>
 <script type="text/javascript">
 function selectcity(url){
 	open_div_extends('切换地区',url,'Loading_child');
 }
 </script>
-<link href="../css/new_css/sub.css" rel="stylesheet" type="text/css">
-<script src="../js/public.js" type="text/javascript"></script>
-<script src="../js/new_js/menu.js" type="text/javascript"></script>
-<script src="../js/new_js/new_goods.js" type="text/javascript"></script>
+<link href="css/new_css/sub.css" rel="stylesheet" type="text/css">
+<script src="js/public.js" type="text/javascript"></script>
+<script src="js/new_js/menu.js" type="text/javascript"></script>
+<script src="js/new_js/new_goods.js" type="text/javascript"></script>
 </head>
 <body>
-<link rel="stylesheet" type="text/css" href="../css/alert_zhe.css" />
-<script type="text/javascript" src="../js/alert_zhe.js"></script>
+<link rel="stylesheet" type="text/css" href="css/alert_zhe.css" />
+<script type="text/javascript" src="js/alert_zhe.js"></script>
 <!--头部-->
 <!--手机回收-->
 <input type="hidden" id="sn" value="00676fdb772fb0a63796fb07b4f134ef" />
@@ -34,17 +35,25 @@ function selectcity(url){
 <div class="recovery">
   <div class="page2">
     <div class="heat_l" style="width:276px;">
-      <div class="heat_img"><img src="http://img.ihuigo.com/goods/739b3910f020832305a94a6a96eec952.jpg" width="264" height="197" /></div>
+      <div class="heat_img">
+        <img th:src="${goods.goodImg}" width="264" height="197" />
+      </div>
     </div>
     <div class="heat_new">
     	<input type="hidden" name="typeid" id="typeid" value="1" />
       <dl>
-        <dt><span>请选择一种回购方式</span><a href="goods/info/21025.html">重新评估</a></dt>
+        <dt>
+          <span th:text="${goods.goodName}" style="color: orange"></span>
+          <input type="hidden" name="choosedInfoDetailIds" th:value="${ids}">
+          <input type="hidden" name="goodsId" th:value="${goods.goodId}">
+          <span>请选择一种回购方式</span>
+          <a href="goods/info/21025.html">重新评估</a>
+        </dt>
         <dd class="clearfix heat_on" name="1">
-          <div class="heat_yellow"> <img src="../images/new_jian.png" class="new_jian" />
+          <div class="heat_yellow"> <img src="images/new_jian.png" class="new_jian" />
             <div class="yellow_l"> <a href="javascript:;" class="new_gou new_gou2"></a> <span class="new_icon1">现金</span> </div>
             <div class="yellow_r"> <span>全网最高</span>
-              <div id="pg_price" class="digits"></div>
+              <div id="pg_price" class="digits" th:text="'￥'+${price}"></div>
               <span>元&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;官方直收</span>
               <div class="clear"></div>
             </div>
@@ -112,12 +121,12 @@ function selectcity(url){
         <a id="nav_p5" onclick="_nav('nav_p',5,6)"><span class="itme5"><!--专业数据删除--></span></a>
         <a id="nav_p6" onclick="_nav('nav_p',6,6)"><span class="itme6"><!-- 72小时价格保护--></span></a>
     </div>
-        <div id="nav_p_list1" class="nav_p_list"><img src="../images/new_images/zb3.png" /></div>
-        <div id="nav_p_list2" class="nav_p_list" style="display:none"><img src="../images/new_images/zb4.png" /></div>
-        <div id="nav_p_list3" class="nav_p_list" style="display:none"><img src="../images/new_images/zb5.png" /></div>
-        <div id="nav_p_list4" class="nav_p_list" style="display:none"><img src="../images/new_images/zb6.png" /></div>
-        <div id="nav_p_list5" class="nav_p_list" style="display:none"><img src="../images/new_images/zb7.png" /></div>
-        <div id="nav_p_list6" class="nav_p_list" style="display:none"><img src="../images/new_images/zb8.png" /></div>
+        <div id="nav_p_list1" class="nav_p_list"><img src="images/new_images/zb3.png" /></div>
+        <div id="nav_p_list2" class="nav_p_list" style="display:none"><img src="images/new_images/zb4.png" /></div>
+        <div id="nav_p_list3" class="nav_p_list" style="display:none"><img src="images/new_images/zb5.png" /></div>
+        <div id="nav_p_list4" class="nav_p_list" style="display:none"><img src="images/new_images/zb6.png" /></div>
+        <div id="nav_p_list5" class="nav_p_list" style="display:none"><img src="images/new_images/zb7.png" /></div>
+        <div id="nav_p_list6" class="nav_p_list" style="display:none"><img src="images/new_images/zb8.png" /></div>
     </div>
     <div class="list" id="nav_s_list2" style="display:none">
       	<iframe id="goods_review" name="goods_review" src=""  width="724" border="0" frameborder="0"></iframe>
@@ -131,7 +140,7 @@ function selectcity(url){
     <div class="notes_title"><span>回购须知</span></div>
     <dl>
       <dd>
-        <div class="img"><img src="../images/new_images/icon12.gif" /></div>
+        <div class="img"><img src="images/new_images/icon12.gif" /></div>
         <div class="txt">
           <h2>取消密码</h2>
           <p>请将所设置的密码取消，以便我们检测人员及时进行功能检测。</p>
@@ -139,7 +148,7 @@ function selectcity(url){
         <div class="clear"></div>
       </dd>
       <dd>
-        <div class="img"><img src="../images/new_images/icon13.gif" /></div>
+        <div class="img"><img src="images/new_images/icon13.gif" /></div>
         <div class="txt">
           <h2>退出账户</h2>
           <p>苹果手机IOS7以上请退出icloud帐户魅族请退出flyme帐户</p>
@@ -147,7 +156,7 @@ function selectcity(url){
         <div class="clear"></div>
       </dd>
       <dd>
-        <div class="img"><img src="../images/new_images/icon14.gif" /></div>
+        <div class="img"><img src="images/new_images/icon14.gif" /></div>
         <div class="txt">
           <h2>回收过程安全吗？</h2>
           <p>回购网是正规工商注册的环保企业，成立3年多，是中国标准化回收的领航者。支持多种方式交易：支付宝担保、货到付款和当面交易,并承诺到货后24小时之内确认汇款</p>
@@ -155,7 +164,7 @@ function selectcity(url){
         <div class="clear"></div>
       </dd>
       <dd class="no">
-        <div class="img"><img src="../images/new_images/icon15.gif" /></div>
+        <div class="img"><img src="images/new_images/icon15.gif" /></div>
         <div class="txt">
           <h2>价格会不会有变动？</h2>
           <p>只要您所描叙的使用情况和实际相符合，这个就是最终的回购价格，不会有变动，若和所描叙的有差异，我们将与您说明情况，然后根据网站的评估系统重新评估。若价格不合适，您也可以要求退货。</p>
@@ -168,15 +177,15 @@ function selectcity(url){
   <div class="clear"></div>
 </div>
 <div id="pai_mark" class="pai_mark"></div>
-<div class="pai_box pai_give"> <img src="../images/new_images/pai_close.png" class="pai_close1" />
-                                             <p><img src="../images/new_images/70.png" /></p>
+<div class="pai_box pai_give"> <img src="images/new_images/pai_close.png" class="pai_close1" />
+                                             <p><img src="images/new_images/70.png" /></p>
                           
   <div class="pai_bottom">
     <input type="button" value="领取现金" class="pai_btn1" />
   </div>
 </div>
 <div class="pai_cai pai_success">
-    <img src="../images/new_images/pai_close.png" class="pai_close2" />
+    <img src="images/new_images/pai_close.png" class="pai_close2" />
   <h4><span class="cache_amount"></span>元领取成功!</h4>
   <p> 
  1、即领即用，领取后默认使用加价； <br />
