@@ -14,4 +14,7 @@ public interface BasicInfoService {
 
     List<BasicInfo> listInfoByGoodsId(int goodsId, int step);
 
+    // 根据已经选中的选项 ID 查询选项详情已经选项对应的评估项信息
+    List<BasicInfo> listInfoDetailByIds(String ids);
+
 }

@@ -65,10 +65,14 @@
             </ul>
         </div>
         <div class="shortcut-right">
-            <ul id='login_show'>
-                <li><a href="members/login.html" rel="nofollow">登录</a></li>
+            <ul id='login_show' th:if="${#request.getSession().getAttribute('user') == null}">
+                <li><a href="login.html" rel="nofollow">登录</a></li>
                 <li><a href="members/register.html" rel="nofollow">注册</a></li>
             </ul>
+            <span th:if="${#request.getSession().getAttribute('user') != null}">
+                <label style="color: orange" th:text="${#request.getSession().getAttribute('user').userName}"></label>
+                <label>欢迎您！</label>
+            </span>
         </div>
         <div class="clear"></div>
     </div>

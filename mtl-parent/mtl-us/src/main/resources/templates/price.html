@@ -30,8 +30,7 @@ function selectcity(url){
 <script type="text/javascript" src="js/alert_zhe.js"></script>
 <!--头部-->
 <!--手机回收-->
-<input type="hidden" id="sn" value="00676fdb772fb0a63796fb07b4f134ef" />
-<input type="hidden" id="sign" value="f237947533d00f1e7cd0c75f17e958ec"  />
+
 <div class="recovery">
   <div class="page2">
     <div class="heat_l" style="width:276px;">
@@ -44,8 +43,7 @@ function selectcity(url){
       <dl>
         <dt>
           <span th:text="${goods.goodName}" style="color: orange"></span>
-          <input type="hidden" name="choosedInfoDetailIds" th:value="${ids}">
-          <input type="hidden" name="goodsId" th:value="${goods.goodId}">
+
           <span>请选择一种回购方式</span>
           <a href="goods/info/21025.html">重新评估</a>
         </dt>
@@ -58,8 +56,22 @@ function selectcity(url){
               <div class="clear"></div>
             </div>
           </div>
-          <input type="button" value="立即下单" class="heat_input" onclick="new_addcart('ajax/new_addcart.html','sub','00676fdb772fb0a63796fb07b4f134ef')" />
-          <a href="javascript:;" class="heat_hg" onclick="new_addcart('ajax/new_addcart.html','add','00676fdb772fb0a63796fb07b4f134ef')">加入回购车</a> </dd>
+          <form method="post" name="orderForm">
+            <input type="hidden" name="ids" th:value="${ids}">
+            <input type="hidden" name="goodId" th:value="${goods.goodId}">
+            <input type="hidden" name="goodName" th:value="${goods.goodName}">
+            <input type="hidden" name="goodImg" th:value="${goods.goodImg}">
+            <input type="hidden" name="price" th:value="${price}">
+          </form>
+          <input type="button" value="立即下单" class="heat_input" onclick="submitForm()" />
+          <a href="javascript:;" class="heat_hg" onclick="">加入回购车</a> </dd>
+        <script type="text/javascript">
+          function submitForm() {
+            document.orderForm.action="order/create";
+            document.orderForm.submit();
+          }
+        </script>
+
       </dl>
       <div class="heat_xin" style="margin-top:0">每成交一笔将为贫困地区的孩子捐赠1元 &nbsp;</div>
 

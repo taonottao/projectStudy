@@ -1,7 +1,7 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html xmlns:th="http://www/thymeleaf.org">
 <head>
+    <base th:href="${#request.getContextPath()}+'/'">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>订单提交-回购网 -  手机回收网 | 二手手机交易 | 笔记本回收 | 平板回收</title>
     <meta name="keywords" content="手机回收,二手手机回收,手机回收网,二手手机回收网,二手手机,笔记本回收,平板电脑回收,数码相机回收,旧手机回收,苹果手机回收" />
@@ -11,33 +11,33 @@
     <meta name="mobile-agent" content="format=html5;url=http://m.ihuigo.com/order/cart.html">
     <meta name="applicable-device" content="pc">
     <link rel="alternate" media="only screen and(max-width: 640px)"     href="http://m.ihuigo.com/order/cart.html" >
-    <link href="../favicon.ico" type=image/x-icon rel="Icon"/>
-    <link href="../css/new_css/global.css" rel="stylesheet" type="text/css"/>
-    <script src="../js/new_js/jquery-1.4.2.js" type="text/javascript"></script>
-    <script src="../js/new_js/new_public.js" type="text/javascript"></script>
+    <link href="favicon.ico" type=image/x-icon rel="Icon"/>
+    <link href="css/new_css/global.css" rel="stylesheet" type="text/css"/>
+    <script src="js/new_js/jquery-1.4.2.js" type="text/javascript"></script>
+    <script src="js/new_js/new_public.js" type="text/javascript"></script>
     <script type="text/javascript">
         function selectcity(url){
             open_div_extends('切换地区',url,'Loading_child');
         }
     </script>
-    <link href="../css/new_global.css" rel="stylesheet" type="text/css">
+    <link href="css/new_global.css" rel="stylesheet" type="text/css">
 
-    <script src="../js/new_js/jquery.kinMaxShow-1.1.min.js" type="text/javascript"></script>
+    <script src="js/new_js/jquery.kinMaxShow-1.1.min.js" type="text/javascript"></script>
 
-    <script src="../js/new_js/lrtk.js" type="text/javascript"></script>
+    <script src="js/new_js/lrtk.js" type="text/javascript"></script>
 
-    <script src="../js/new_js/menu.js" type="text/javascript"></script>
+    <script src="js/new_js/menu.js" type="text/javascript"></script>
 
-    <script src="../js/new_js/index.js" type="text/javascript"></script>
+    <script src="js/new_js/index.js" type="text/javascript"></script>
 
 </head>
 <body>
-<link rel="stylesheet" type="text/css" href="../css/alert_zhe.css" />
-<script type="text/javascript" src="../js/alert_zhe.js"></script>
-<script type="text/javascript" src="../js/payway.js" ></script>
-<script type="text/javascript" src="../js/order.js" ></script>
-<script type="text/javascript" src="../js/city.js"></script>
-<script type="text/javascript" src="../js/city_jilian.js"></script>
+<link rel="stylesheet" type="text/css" href="css/alert_zhe.css" />
+<script type="text/javascript" src="js/alert_zhe.js"></script>
+<script type="text/javascript" src="js/payway.js" ></script>
+<script type="text/javascript" src="js/order.js" ></script>
+<script type="text/javascript" src="js/city.js"></script>
+<script type="text/javascript" src="js/city_jilian.js"></script>
 <form name="myFrom" id="myFrom" method="post" action="/order/sub.html">
     <input type="hidden" name="ifalipay" id="ifalipay" value="n" />
     <input type="hidden" name="validate_code" value="45c512b37e2922042a98bd0b44dcb245" />
@@ -51,7 +51,7 @@
             <div class="areas_flow">
                 <div class="c_1" id="m1" onclick="aa(1)">
                     <ul class="bor_right">
-                        <li class="bor_img"><IMG src="../images/img_1_1.png"></li>
+                        <li class="bor_img"><IMG src="images/img_1_1.png"></li>
                     </ul>
                     <ul class="bor_left">
                         <li class="bor_tile">官方担保交易</li>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="c_0" id="m2" onclick="aa(2)" >
                     <ul class="bor_right">
-                        <li class="bor_img"><IMG src="../images/img_2_1.png"></li>
+                        <li class="bor_img"><IMG src="images/img_2_1.png"></li>
                     </ul>
                     <ul class="bor_left">
                         <li class="bor_tile">支付宝交易</li>
@@ -71,7 +71,7 @@
                 </div>
                 <div class="c_0" id="m3" onclick="aa(3)" style="border:none">
                     <ul class="bor_right">
-                        <li class="bor_img"><IMG src="../images/img_3_1.png"></li>
+                        <li class="bor_img"><IMG src="images/img_3_1.png"></li>
                     </ul>
                     <ul class="bor_left">
                         <li class="bor_tile">上门现金交易</li>
@@ -82,9 +82,9 @@
                 <div class="clear"></div>
             </div>
             <!--切换-->
-            <div class="process block" id="t1"><img src="../images/liucheng1_1.jpg" /></div>
-            <div class="process none" id="t2"><img src="../images/liucheng2.jpg" /></div>
-            <div class="process none" id="t3"><img src="../images/liucheng3_1.jpg" /></div>
+            <div class="process block" id="t1"><img src="images/liucheng1_1.jpg" /></div>
+            <div class="process none" id="t2"><img src="images/liucheng2.jpg" /></div>
+            <div class="process none" id="t3"><img src="images/liucheng3_1.jpg" /></div>
             <div class="ihuigo">
                 <!-- 通用联系方式start-->
                 <div class="sub_con_top">
@@ -101,13 +101,13 @@
                         <ul class="contact_list">
                             <li class="contact_text">联系人：</li>
                             <li class="contact_texts"><span class="img_1"><img
-                                    src="../images/in_1.gif"></span><span class="img_2"><input name="link_name" id="link_name" type="text"></span> <span class="img_1"><IMG src="../images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
+                                    src="images/in_1.gif"></span><span class="img_2"><input name="link_name" id="link_name" type="text"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
                             <div class="clear"></div>
                         </ul>
                         <ul class="contact_list">
                             <li class="contact_text">手机号码：</li>
                             <li class="contact_texts"><span class="img_1"><img
-                                    src="../images/in_1.gif"></span><span class="img_2"><input name="mobile" id="mobile" type="text"></span> <span class="img_1"><IMG src="../images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
+                                    src="images/in_1.gif"></span><span class="img_2"><input name="mobile" id="mobile" type="text"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
                             <div class="clear"></div>
                         </ul>
                         <div class="mod_select" style="margin-bottom:12px;">
@@ -146,12 +146,12 @@
                             <ul class="contact_list">
                                 <li class="contact_text">详细地址：</li>
                                 <li class="contact_texts"><span class="img_1"><img
-                                        src="../images/in_1.gif"></span><span class="img_2_area"><input name="address" id="address" type="text"></span> <span class="img_1"><IMG src="../images/in_3.gif"></span></li>
+                                        src="images/in_1.gif"></span><span class="img_2_area"><input name="address" id="address" type="text"></span> <span class="img_1"><IMG src="images/in_3.gif"></span></li>
                                 <div class="clear"></div>
                             </ul>
                         </div>
                     </div>
-                    <link rel="stylesheet" type="text/css" href="../js/calendar/calendar.css"/>
+                    <link rel="stylesheet" type="text/css" href="js/calendar/calendar.css"/>
                     <script type="text/javascript" src="js/calendar.php"></script>
                     <!--上门取件时间-->
                     <div class="contact_list" style="margin-top:20px;">
@@ -266,13 +266,13 @@
                             <ul class="contact_list">
                                 <li class="contact_text">开户姓名：</li>
                                 <li class="contact_texts"><span class="img_1"><img
-                                        src="../images/in_1.gif"></span><span class="img_2"><input name="realname" id="realname" type="text"></span> <span class="img_1"><IMG src="../images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> <span class="contact_textsval">开户时的真实姓名</span></li>
+                                        src="images/in_1.gif"></span><span class="img_2"><input name="realname" id="realname" type="text"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> <span class="contact_textsval">开户时的真实姓名</span></li>
                                 <div class="clear"></div>
                             </ul>
                             <ul class="contact_list" style="position:relative">
                                 <li class="contact_text">银行帐号：</li>
                                 <li class="contact_texts"><span class="img_1"><img
-                                        src="../images/in_1.gif"></span><span class="img_2"><input name="card_sn" id="card_sn" type="text" onkeyup="show_card_sn_format()" onfocus="show_card_sn_format()" onblur="card_sn_blur()"></span> <span class="img_1"><IMG src="../images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> <span class="contact_textsval">我们对用户帐号信息严格保密，请放心填写！</span></li>
+                                        src="images/in_1.gif"></span><span class="img_2"><input name="card_sn" id="card_sn" type="text" onkeyup="show_card_sn_format()" onfocus="show_card_sn_format()" onblur="card_sn_blur()"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> <span class="contact_textsval">我们对用户帐号信息严格保密，请放心填写！</span></li>
                                 <div class="clear"></div>
 
                                 <div id="card_sn_format" style="display:none;position:absolute; left:100px; top:-26px; z-index:10000; border:1px solid #ccc; background:#fff9c9; height:24px; line-height:24px; padding:0 5px; font-size:16px; color:#2056ff; font-weight:bold; font-family:"微软雅黑";"></div>
@@ -351,14 +351,14 @@
                         <ul class="contact_list">
                             <li class="contact_text">姓名：</li>
                             <li class="contact_texts"><span class="img_1"><img
-                                    src="../images/in_1.gif"></span><span class="img_2"><input name="alipay_realname" id="alipay_realname" type="text" value=""></span> <span class="img_1"><IMG src="../images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
+                                    src="images/in_1.gif"></span><span class="img_2"><input name="alipay_realname" id="alipay_realname" type="text" value=""></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
                             <div class="clear"></div>
                         </ul>
 
                         <ul class="contact_list">
                             <li class="contact_text">支付宝账号：</li>
                             <li class="contact_texts"><span class="img_1"><img
-                                    src="../images/in_1.gif"></span><span class="img_2"><input name="alipay_username" id="alipay_username" type="text" value="" ></span> <span class="img_1"><IMG src="../images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*亲，必须是实名认证的支付宝账号哦！</em></span> </li>
+                                    src="images/in_1.gif"></span><span class="img_2"><input name="alipay_username" id="alipay_username" type="text" value="" ></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*亲，必须是实名认证的支付宝账号哦！</em></span> </li>
                             <div class="clear"></div>
                         </ul>
                     </div>
@@ -399,8 +399,8 @@
                         </label>
                     </div>
 
-                    <link href="../js/new_js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css"/>
-                    <script src="../js/new_js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+                    <link href="js/new_js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css"/>
+                    <script src="js/new_js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 
                     <div class="contanct_c" id="go_mianjiao_method_2" style="display:none;">
           	<span >上门日期：<input name="yu_time" id="yu_time" type="text" onfocus="return WdatePicker();"  style="width:80px;">
@@ -463,7 +463,7 @@
             <dt><span>请输入您的姓名和身份证号，以生成中国人保保单</span></dt>
             <dd><span>姓&nbsp;&nbsp;&nbsp;名：</span><input type="text" name="baoxian_name" id="baoxian_name" value="" /></dd>
             <dd><span>身份证：</span><input type="text" name="baoxian_card_id" id="baoxian_card_id" value="" /></dd>
-            <dd style="height:20px; line-height:20px;"><img src="../images/new_images/picc.jpg" style="vertical-align:middle; margin-right:6px;" />旧手机隐私信息泄露或运输丢失，人保理赔五千元</dd>
+            <dd style="height:20px; line-height:20px;"><img src="images/new_images/picc.jpg" style="vertical-align:middle; margin-right:6px;" />旧手机隐私信息泄露或运输丢失，人保理赔五千元</dd>
 
         </dl>
 
@@ -480,45 +480,27 @@
             </tr>
             <tr>
                 <td height="95" align="center">
-                    <div class="contact_way_img"><img src="http://img.ihuigo.com/goods_a/739b3910f020832305a94a6a96eec952.jpg"></div>
-                    <div class="contact_way_txt"><p><span>iphone 7</span></p></div>
+                    <div class="contact_way_img"><img th:src="${goods.goodImg}" style="height: 100px"></div>
+                    <div class="contact_way_txt"><p><span th:text="${goods.goodName}">iphone 7</span></p></div>
                     <div class="clear"></div>
                 </td>
                 <td align="center" style="line-height:22px;">
-                    <h3>￥2800.00</h3>
+                    <h3 th:inline="text">￥[[${price}]]</h3>
                 </td>
                 </td>
                 <td style="padding-left:28px; line-height: 18px;text-align: left;">
-		  								<span>
-									<a>大陆行货</a>
-									|<a>保修一个月以上</a>
-								</span>
-                    <br />
-
-                    <span>
-									<a>红色</a>
-									 |&nbsp;&nbsp;<a>完好无破损</a>
-									 |&nbsp;&nbsp;<a>显示完好</a>
-									 |&nbsp;&nbsp;<a>通话功能正常</a>
-									 |&nbsp;&nbsp;<a>iCloud账号可以解除</a>
-									 |&nbsp;&nbsp;<a>全新机</a>
-									 |&nbsp;&nbsp;<a>开机正常</a>
-									 |&nbsp;&nbsp;<a>机身无进水受潮</a>
-									 |&nbsp;&nbsp;<a>按键接口及卡槽正常</a>
-									 |&nbsp;&nbsp;<a>无拆修</a>
-									 |&nbsp;&nbsp;<a>指纹功能正常</a>
-									 |&nbsp;&nbsp;<a>蓝牙/wifi功能正常</a>
-									 |&nbsp;&nbsp;<a>照相及感光功能正常</a>
-									 |&nbsp;&nbsp;<a>有换机</a>
-									 |&nbsp;&nbsp;<a>32G</a>
-									 |&nbsp;&nbsp;<a>机身无变形</a>
-								</span>
-
+                    <span th:each="basicInfo:${basicInfoList}">
+                        <label th:text="${basicInfo.basicInfoName}"></label><em>:</em>
+                        <span th:each="infoDetail:${basicInfo.infoDetailList}">
+                            <label th:text="${infoDetail.infoDetailName}"></label>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                        <br>
+                    </span>
                 </td>
             </tr>
             </tbody>
         </table>
-        <div class="foot_bor"> <em>1</em>件产品总计回收价格<em style="font-size:18px;">￥2800</em> <!--<span>赠送环保券 <i>30</i>元--></span></div>
+        <div class="foot_bor"> 总计回收价格<em style="font-size:18px;" th:inline="text">￥[[${price}]]</em> <!--<span>赠送环保券 <i>30</i>元--></span></div>
     </div>
     <!--订单-->
     </div>

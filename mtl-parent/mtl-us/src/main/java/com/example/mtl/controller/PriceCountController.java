@@ -37,5 +37,6 @@ public class PriceCountController {
         model.addAttribute("price", price);
         model.addAttribute("ids", ids);
         return "price";
+
     }
 }

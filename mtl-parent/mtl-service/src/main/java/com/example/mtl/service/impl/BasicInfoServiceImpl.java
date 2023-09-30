@@ -22,4 +22,10 @@ public class BasicInfoServiceImpl implements BasicInfoService {
         List<BasicInfo> basicInfoList = basicInfoDAO.selectBasicInfoByGoodsId(goodsId, step);
         return basicInfoList;
     }
+
+    @Override
+    public List<BasicInfo> listInfoDetailByIds(String ids) {
+        List<BasicInfo> basicInfoList = basicInfoDAO.selectInfoDetailByIds(ids);
+        return basicInfoList;
+    }
 }

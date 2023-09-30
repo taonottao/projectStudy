@@ -15,4 +15,6 @@ public interface BasicInfoDAO {
     List<BasicInfo> selectBasicInfoByGoodsId(@Param("goodsId") int goodsId,
                                              @Param("step") int step);
 
+    List<BasicInfo> selectInfoDetailByIds(String ids);
+
 }

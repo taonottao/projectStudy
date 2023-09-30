@@ -24,4 +24,13 @@
         where gd.fk_good_id=#{goodsId} and b.basic_info_status=1 and b.basic_info_step=#{step}
     </select>
 
+    <select id="selectInfoDetailByIds" resultMap="BasicInfoMap">
+        select
+            basic_info_id, basic_info_name, basic_info_status, basic_info_step,
+            info_detail_id, info_detail_name, info_detail_desc, fk_basic_info_id
+        from tb_info_detail d join tb_basic_info b
+                                   on d.fk_basic_info_id = b.basic_info_id
+        where info_detail_id in (${ids})
+    </select>
+
 </mapper>

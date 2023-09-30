@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * 转发允许被直接访问的页面
+ *
  * @version 1.0
  * @Author T-WANG
  * @Date 2023/9/18 22:50
@@ -12,4 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PageController {
 
+    @RequestMapping("/info.html")
+    public String info() {
+        return "info";
+    }
+
+    @RequestMapping("/login.html")
+    public String login() {
+        return "login";
+    }
 }
