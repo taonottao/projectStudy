@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wt.mtl.dao.OrderDAO">
+
+    <insert id="insertOrder" >
+        insert into tb_orders(order_id,
+                                  user_id,
+                              order_total_price,
+                              user_addr,
+                              user_name,
+                              user_tel,
+                              create_time,
+                              order_desc,
+                              retrieve_type,
+                              pay_name,
+                              pay_account,
+                              order_status
+        ) values(#{orderId},#{userId},#{orderTotalPrice},#{userAddr},#{userName},#{userTel},#{createTime},#{orderDesc},
+                 #{retrieveType},#{payName},#{payAccount},#{orderStatus})
+    </insert>
+
+</mapper>
