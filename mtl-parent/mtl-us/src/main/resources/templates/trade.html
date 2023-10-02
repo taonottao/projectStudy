@@ -38,10 +38,18 @@
 <script type="text/javascript" src="js/order.js" ></script>
 <script type="text/javascript" src="js/city.js"></script>
 <script type="text/javascript" src="js/city_jilian.js"></script>
-<form name="myFrom" id="myFrom" method="post" action="/order/sub.html">
-    <input type="hidden" name="ifalipay" id="ifalipay" value="n" />
-    <input type="hidden" name="validate_code" value="45c512b37e2922042a98bd0b44dcb245" />
-    <input type="hidden" name="typeid" id="typeid" value="1" />
+<form name="orderForm" id="orderForm" method="post" action="order/save">
+    <!-- 交易方式-->
+    <input type="hidden" name="retrieveType" id="retrieveType" value="1"/>
+    <!-- 地址-->
+    <input type="hidden" name="userAddr" id="userAddr" />
+    <!-- 评估价格-->
+    <input type="hidden" name="orderTotalPrice" id="orderTotalPrice" th:value="${price}"/>
+    <!-- 商品 id-->
+    <input type="hidden" name="goodId" id="goodId" th:value="${goods.goodId}"/>
+    <!-- 商品选项 ids-->
+    <input type="hidden" name="ids" id="ids" th:value="${ids}"/>
+
     <!--提交订单-->
     <div class="contanier page">
         <div class="current"><a href="/">首页</a><span>></span><em>提交订单</em></div>
@@ -64,7 +72,7 @@
                         <li class="bor_img"><IMG src="images/img_2_1.png"></li>
                     </ul>
                     <ul class="bor_left">
-                        <li class="bor_tile">支付宝交易</li>
+                        <li class="bor_tile">线上交易</li>
                         <li class="bor_text">知名平台，安全交易，打款更快捷透明</li>
                     </ul>
                     <div class="clear"></div>
@@ -85,348 +93,370 @@
             <div class="process block" id="t1"><img src="images/liucheng1_1.jpg" /></div>
             <div class="process none" id="t2"><img src="images/liucheng2.jpg" /></div>
             <div class="process none" id="t3"><img src="images/liucheng3_1.jpg" /></div>
-            <div class="ihuigo">
-                <!-- 通用联系方式start-->
-                <div class="sub_con_top">
-                    <div class="contact_ways">联系方式：</div>
-                    <div class="contanct_c check" name="item_member_addr" id="item_member_addr_0">
-                        <label>
-                            <input type="radio" name="member_addr" value="0" checked="checked" onClick="new_member_addr(0)" />
-                            <span>使用新地址</span></label>
-                    </div>
+                <div class="ihuigo">
 
-                    <!-- 新地址start-->
-                    <div   id="new_member_addr_div">
-                        <div class="clear" style="height:15px;"></div>
-                        <ul class="contact_list">
-                            <li class="contact_text">联系人：</li>
-                            <li class="contact_texts"><span class="img_1"><img
-                                    src="images/in_1.gif"></span><span class="img_2"><input name="link_name" id="link_name" type="text"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
-                            <div class="clear"></div>
-                        </ul>
-                        <ul class="contact_list">
-                            <li class="contact_text">手机号码：</li>
-                            <li class="contact_texts"><span class="img_1"><img
-                                    src="images/in_1.gif"></span><span class="img_2"><input name="mobile" id="mobile" type="text"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
-                            <div class="clear"></div>
-                        </ul>
-                        <div class="mod_select" style="margin-bottom:12px;">
-                            <ul>
-                                <li class="contact_text" style="width:88px;">我的地址：</li>
-                                <li>
-
-                                    <div class="select_box">
-                                        <span class="select_txt" id="text_province">请选择省份</span><em class="selet_open"><b></b></em>
-                                        <input type="hidden" id="province" name="province" value="0"  />
-                                        <div class="option" id="option_province"></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="select_box">
-                                        <span class="select_txt" id="text_city">请选择城市</span><em class="selet_open"><b></b></em>
-                                        <input type="hidden" id="city" name="city" value="0"  />
-                                        <div class="option" id="option_city"></div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="select_box">
-                                        <span class="select_txt" id="text_district">请选择区县</span><em class="selet_open"><b></b></em>
-                                        <input type="hidden" id="district" name="district" value="0"  />
-                                        <input type="hidden" id="school_id" name="school_id" value="0"  />
-                                        <div class="option" style="position:absolute;right:0 !important; " id="option_district">
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
-                                <div class="clear"></div>
-                            </ul>
-                        </div>
-                        <div>
-                            <ul class="contact_list">
-                                <li class="contact_text">详细地址：</li>
-                                <li class="contact_texts"><span class="img_1"><img
-                                        src="images/in_1.gif"></span><span class="img_2_area"><input name="address" id="address" type="text"></span> <span class="img_1"><IMG src="images/in_3.gif"></span></li>
-                                <div class="clear"></div>
-                            </ul>
-                        </div>
-                    </div>
-                    <link rel="stylesheet" type="text/css" href="js/calendar/calendar.css"/>
-                    <script type="text/javascript" src="js/calendar.php"></script>
-                    <!--上门取件时间-->
-                    <div class="contact_list" style="margin-top:20px;">
-                        <div id="div_addr" style="display:none;">
-                            <ul><li class="contact_textval">上门取件时间：</li></ul>
-                            <ul class="area_list">
-                                <li class="area_list_texts"><input name="stime" id="stime" type="text" style="border:0px;" onfocus="return showCalendar('stime', '%Y-%m-%d %H:%m', '24', false, 'stime');"  value=""></li>
-                                <li class="area_list_bg"></li>
-                            </ul>
-                            <ul class="area_lists"><li>到</li></ul>
-                            <ul class="area_list">
-                                <li class="area_list_texts">
-                                    <input name="etime" id="etime"   type="text" style="border:0px; "onfocus="return showCalendar('etime', '%Y-%m-%d %H:%m', '24', false, 'etime');" value="">
-                                </li>
-                                <li class="area_list_bg"></li>
-                            </ul>
-                            <div class="clear"></div>
-                        </div>
-
-                        <div class="kuaidi"><!--<a href="###" class="on">回购网联系快递</a>-->
-                            <input type="checkbox" value='y' name="express_true" id="express_true" onclick="express_true_click()"  /><label for="express_true">回购网联系快递</label>
-                        </div>
-                        <script>
-                            function	express_true_click(){
-                                if($("#express_true").attr('checked')){
-                                    $("#div_addr").css('display','block');
-                                }else{
-                                    $("#div_addr").css('display','none');
-                                }
-                            }
-                        </script>
-                    </div>
-                    <!-- 新地址end-->
-                    <script>
-                        function 	new_member_addr(val){
-                            $("div[name='item_member_addr']").attr('class','contanct_c');
-                            if(val)	$("#new_member_addr_div").css('display','none');
-                            else	$("#new_member_addr_div").css('display','block');
-                            $("#item_member_addr_"+val).attr('class','contanct_c check');
-                        }
-                    </script>
-                </div>
-
-                <!-- 通用联系方式end-->
-                <div  id="s1" class="block">
-                    <!-- 银行收款start-->
-                    <div class="sub_con_foot">
-                        <div class="contact_ways">收款银行账号：</div>
-
-
-
-                        <div class="contanct_c check" name="item_member_bank" id="item_member_bank_0">
+                    <!-- 通用联系方式start-->
+                    <div class="sub_con_top">
+                        <div class="contact_ways">联系方式：</div>
+                        <div class="contanct_c check" name="item_member_addr" id="item_member_addr_0">
                             <label>
-                                <input type="radio" name="member_bank" value="0" checked="checked" onClick="new_member_bank(0)" />
-                                <span>使用新账号</span></label>
+                                <input type="radio" name="member_addr" value="0" checked="checked" onClick="new_member_addr(0)" />
+                                <span>使用新地址</span></label>
                         </div>
-                        <div   id="new_member_bank_div">
+
+                        <!-- 新地址start-->
+                        <div   id="new_member_addr_div">
                             <div class="clear" style="height:15px;"></div>
-                            <div class="contact_list">
+                            <ul class="contact_list">
+                                <li class="contact_text">联系人：</li>
+                                <li class="contact_texts">
+                                    <span class="img_1"><img src="images/in_1.gif"></span>
+                                    <span class="img_2"><input name="userName" id="userName" type="text"></span>
+                                    <span class="img_1"><IMG src="images/in_3.gif"></span>
+                                    <span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span>
+                                </li>
+                                <div class="clear"></div>
+                            </ul>
+                            <ul class="contact_list">
+                                <li class="contact_text">手机号码：</li>
+                                <li class="contact_texts">
+                                    <span class="img_1"><img src="images/in_1.gif"></span>
+                                    <span class="img_2"><input name="userTel" id="userTel" type="text"></span>
+                                    <span class="img_1"><IMG src="images/in_3.gif"></span>
+                                    <span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span>
+                                </li>
+                                <div class="clear"></div>
+                            </ul>
+                            <div class="mod_select" style="margin-bottom:12px;">
                                 <ul>
-                                    <li class="contact_text">银行名称：</li>
-                                    <li class="contact_select">
-                                        <select name="bankname" id="bankname">
-                                            <option value="0">请选择银行</option>
-                                            <option value="2">中国银行</option>
-                                            <option value="1">招商银行</option>
-                                            <option value="3">中国工商银行</option>
-                                            <option value="4">中国建设银行</option>
-                                            <option value="5">中国农业银行</option>
-                                            <option value="6">中国邮政储蓄银行</option>
-                                            <option value="7">交通银行</option>
-                                            <option value="8">中国光大银行</option>
-                                            <option value="9">中信银行</option>
-                                            <option value="10">华夏银行</option>
-                                            <option value="11">中国民生银行</option>
-                                            <option value="12">北京银行</option>
-                                            <option value="13">兴业银行</option>
-                                            <option value="14">长沙银行</option>
-                                            <option value="15">深圳发展银行</option>
-                                            <option value="16">广东发展银行</option>
-                                            <option value="17">平安银行</option>
-                                            <option value="18">渤海银行</option>
-                                            <option value="19">天津银行</option>
-                                            <option value="20">北京农村商业银行</option>
-                                            <option value="21">上海浦东发展银行</option>
-                                            <option value="22">上海银行</option>
-                                            <option value="23">江苏银行</option>
-                                            <option value="24">南京银行</option>
-                                            <option value="25">浙商银行</option>
-                                            <option value="26">温州银行</option>
-                                            <option value="27">杭州银行</option>
-                                            <option value="28">宁波银行</option>
-                                            <option value="29">宁波国际银行</option>
-                                            <option value="30">绍兴银行</option>
-                                            <option value="31">徽商银行</option>
-                                            <option value="32">湛江市商业银行</option>
-                                            <option value="33">广州银行</option>
-                                            <option value="34">珠海市商业银行</option>
-                                            <option value="35">东莞银行</option>
-                                            <option value="36">深圳农村商业银行</option>
-                                            <option value="37">广州农村商业银行</option>
-                                            <option value="38">东莞农村商业银行</option>
-                                            <option value="39">佛山顺德农村商业银行</option>
-                                            <option value="40">华商银行</option>
-                                        </select>
-                                        <span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
+                                    <li class="contact_text" style="width:88px;">我的地址：</li>
+                                    <li>
+
+                                        <div class="select_box">
+                                            <span class="select_txt" id="text_province">请选择省份</span><em class="selet_open"><b></b></em>
+                                            <input type="hidden" id="province" name="province" value="0"  />
+                                            <input type="hidden" id="provinceName" name="provinceName" value="0"  />
+                                            <div class="option" id="option_province"></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="select_box">
+                                            <span class="select_txt" id="text_city">请选择城市</span><em class="selet_open"><b></b></em>
+                                            <input type="hidden" id="city" name="city" value="0"  />
+                                            <input type="hidden" id="cityName" name="cityName" value="0"  />
+                                            <div class="option" id="option_city"></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="select_box">
+                                            <span class="select_txt" id="text_district">请选择区县</span><em class="selet_open"><b></b></em>
+                                            <input type="hidden" id="district" name="district" value="0"  />
+                                            <input type="hidden" id="districtName" name="districtName" value="0"  />
+                                            <input type="hidden" id="school_id" name="school_id" value="0"  />
+                                            <div class="option" style="position:absolute;right:0 !important; " id="option_district">
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
                                     <div class="clear"></div>
                                 </ul>
                             </div>
+                            <div>
+                                <ul class="contact_list">
+                                    <li class="contact_text">详细地址：</li>
+                                    <li class="contact_texts">
+                                        <span class="img_1"><img src="images/in_1.gif"></span>
+                                        <span class="img_2_area">
+                                            <input name="address" id="address" type="text">
 
-
-                            <ul class="contact_list">
-                                <li class="contact_text">开户姓名：</li>
-                                <li class="contact_texts"><span class="img_1"><img
-                                        src="images/in_1.gif"></span><span class="img_2"><input name="realname" id="realname" type="text"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> <span class="contact_textsval">开户时的真实姓名</span></li>
+                                        </span>
+                                        <span class="img_1"><IMG src="images/in_3.gif"></span>
+                                    </li>
+                                    <div class="clear"></div>
+                                </ul>
+                            </div>
+                        </div>
+                        <link rel="stylesheet" type="text/css" href="js/calendar/calendar.css"/>
+                        <script type="text/javascript" src="js/calendar.php"></script>
+                        <!--上门取件时间-->
+                        <div class="contact_list" style="margin-top:20px;">
+                            <div id="div_addr" style="display:none;">
+                                <ul><li class="contact_textval">上门取件时间：</li></ul>
+                                <ul class="area_list">
+                                    <li class="area_list_texts"><input name="stime" id="stime" type="text" style="border:0px;" onfocus="return showCalendar('stime', '%Y-%m-%d %H:%m', '24', false, 'stime');"  value=""></li>
+                                    <li class="area_list_bg"></li>
+                                </ul>
+                                <ul class="area_lists"><li>到</li></ul>
+                                <ul class="area_list">
+                                    <li class="area_list_texts">
+                                        <input name="etime" id="etime"   type="text" style="border:0px; "onfocus="return showCalendar('etime', '%Y-%m-%d %H:%m', '24', false, 'etime');" value="">
+                                    </li>
+                                    <li class="area_list_bg"></li>
+                                </ul>
                                 <div class="clear"></div>
-                            </ul>
-                            <ul class="contact_list" style="position:relative">
-                                <li class="contact_text">银行帐号：</li>
-                                <li class="contact_texts"><span class="img_1"><img
-                                        src="images/in_1.gif"></span><span class="img_2"><input name="card_sn" id="card_sn" type="text" onkeyup="show_card_sn_format()" onfocus="show_card_sn_format()" onblur="card_sn_blur()"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> <span class="contact_textsval">我们对用户帐号信息严格保密，请放心填写！</span></li>
-                                <div class="clear"></div>
+                            </div>
 
-                                <div id="card_sn_format" style="display:none;position:absolute; left:100px; top:-26px; z-index:10000; border:1px solid #ccc; background:#fff9c9; height:24px; line-height:24px; padding:0 5px; font-size:16px; color:#2056ff; font-weight:bold; font-family:"微软雅黑";"></div>
-                        </ul>
+                            <div class="kuaidi"><!--<a href="###" class="on">回购网联系快递</a>-->
+                                <input type="checkbox" value='y' name="express_true" id="express_true" onclick="express_true_click()"  /><label for="express_true">回购网联系快递</label>
+                            </div>
+                            <script>
+                                function	express_true_click(){
+                                    if($("#express_true").attr('checked')){
+                                        $("#div_addr").css('display','block');
+                                    }else{
+                                        $("#div_addr").css('display','none');
+                                    }
+                                }
+                            </script>
+                        </div>
+                        <!-- 新地址end-->
+                        <script>
+                            function 	new_member_addr(val){
+                                $("div[name='item_member_addr']").attr('class','contanct_c');
+                                if(val)	$("#new_member_addr_div").css('display','none');
+                                else	$("#new_member_addr_div").css('display','block');
+                                $("#item_member_addr_"+val).attr('class','contanct_c check');
+                            }
+                        </script>
                     </div>
+                    <!-- 通用联系方式end-->
+
+                    <div  id="s1" class="block">
+                        <!-- 银行收款start-->
+                        <div class="sub_con_foot">
+                            <div class="contact_ways">收款银行账号：</div>
+
+
+
+                            <div class="contanct_c check" name="item_member_bank" id="item_member_bank_0">
+                                <label>
+                                    <input type="radio" name="member_bank" value="0" checked="checked" onClick="new_member_bank(0)" />
+                                    <span>使用新账号</span>
+                                </label>
+                            </div>
+                            <div   id="new_member_bank_div">
+                                <div class="clear" style="height:15px;"></div>
+                                <div class="contact_list">
+                                    <ul>
+                                        <li class="contact_text">银行名称：</li>
+                                        <li class="contact_select">
+                                            <select name="bankname" id="bankname">
+                                                <option value="0">请选择银行</option>
+                                                <option value="2">中国银行</option>
+                                                <option value="1">招商银行</option>
+                                                <option value="3">中国工商银行</option>
+                                                <option value="4">中国建设银行</option>
+                                                <option value="5">中国农业银行</option>
+                                                <option value="6">中国邮政储蓄银行</option>
+                                                <option value="7">交通银行</option>
+                                                <option value="8">中国光大银行</option>
+                                                <option value="9">中信银行</option>
+                                                <option value="10">华夏银行</option>
+                                                <option value="11">中国民生银行</option>
+                                                <option value="12">北京银行</option>
+                                                <option value="13">兴业银行</option>
+                                                <option value="14">长沙银行</option>
+                                                <option value="15">深圳发展银行</option>
+                                                <option value="16">广东发展银行</option>
+                                                <option value="17">平安银行</option>
+                                                <option value="18">渤海银行</option>
+                                                <option value="19">天津银行</option>
+                                                <option value="20">北京农村商业银行</option>
+                                                <option value="21">上海浦东发展银行</option>
+                                                <option value="22">上海银行</option>
+                                                <option value="23">江苏银行</option>
+                                                <option value="24">南京银行</option>
+                                                <option value="25">浙商银行</option>
+                                                <option value="26">温州银行</option>
+                                                <option value="27">杭州银行</option>
+                                                <option value="28">宁波银行</option>
+                                                <option value="29">宁波国际银行</option>
+                                                <option value="30">绍兴银行</option>
+                                                <option value="31">徽商银行</option>
+                                                <option value="32">湛江市商业银行</option>
+                                                <option value="33">广州银行</option>
+                                                <option value="34">珠海市商业银行</option>
+                                                <option value="35">东莞银行</option>
+                                                <option value="36">深圳农村商业银行</option>
+                                                <option value="37">广州农村商业银行</option>
+                                                <option value="38">东莞农村商业银行</option>
+                                                <option value="39">佛山顺德农村商业银行</option>
+                                                <option value="40">华商银行</option>
+                                            </select>
+                                            <span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
+                                        <div class="clear"></div>
+                                    </ul>
+                                </div>
+
+
+                                <ul class="contact_list">
+                                    <li class="contact_text">开户姓名：</li>
+                                    <li class="contact_texts"><span class="img_1"><img
+                                            src="images/in_1.gif"></span><span class="img_2"><input name="realname" id="realname" type="text"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> <span class="contact_textsval">开户时的真实姓名</span></li>
+                                    <div class="clear"></div>
+                                </ul>
+                                <ul class="contact_list" style="position:relative">
+                                    <li class="contact_text">银行帐号：</li>
+                                    <li class="contact_texts"><span class="img_1"><img
+                                            src="images/in_1.gif"></span><span class="img_2"><input name="card_sn" id="card_sn" type="text" onkeyup="show_card_sn_format()" onfocus="show_card_sn_format()" onblur="card_sn_blur()"></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> <span class="contact_textsval">我们对用户帐号信息严格保密，请放心填写！</span></li>
+                                    <div class="clear"></div>
+
+                                    <div id="card_sn_format" style="display:none;position:absolute; left:100px; top:-26px; z-index:10000; border:1px solid #ccc; background:#fff9c9; height:24px; line-height:24px; padding:0 5px; font-size:16px; color:#2056ff; font-weight:bold; font-family:"微软雅黑";"></div>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <!-- 银行收款end-->
 
                 </div>
-                <!-- 银行收款end-->
-            </div>
-            <div  id="s1" class="block">
-                <!-- 手机解锁情况start-->
-                <div class="sub_con_foot">
-                    <div class="contact_ways m_unclock">
-                        手机解锁情况：
-                        <label>
-                            <span><input type="radio" name="lock" value="y">已解锁</span>
-                            <span class="guide">解锁指引<i>？</i></span>
-                            <span style="margin-left:30px;"><input type="radio"  name="lock" value="n" >回购网解锁</span>
-                        </label>
-                        <div class="alertTips">
-                            <p>iPhone设置取消开机密码<span>设置-Touch ID和密码-点击关闭密码</span></p>
-                            <p>iPhone关闭iCloud<span>设置-iCloud-注销-从我的iPhone删除-输入密码-删除</span></p>
-                            <p>魅族手机取消开机密码<span>设置-安全-屏幕密码-输入密码-关闭</span></p>
-                            <p>魅族手机关闭Flyme:<span>方法1：设置-账户-退出账户</span><span>方法2：打开Flyme官网登录-云服务-登录选择机型-远程退出 </span></p>
+
+                <div  id="s1" class="block">
+
+
+
+                    <!-- 手机解锁情况start-->
+                    <div class="sub_con_foot">
+                        <div class="contact_ways m_unclock">
+                            手机解锁情况：
+                            <label>
+                                <span><input type="radio" name="lock" value="y">已解锁</span>
+                                <span class="guide">解锁指引<i>？</i></span>
+                                <span style="margin-left:30px;"><input type="radio"  name="lock" value="n" >回购网解锁</span>
+                            </label>
+                            <div class="alertTips">
+                                <p>iPhone设置取消开机密码<span>设置-Touch ID和密码-点击关闭密码</span></p>
+                                <p>iPhone关闭iCloud<span>设置-iCloud-注销-从我的iPhone删除-输入密码-删除</span></p>
+                                <p>魅族手机取消开机密码<span>设置-安全-屏幕密码-输入密码-关闭</span></p>
+                                <p>魅族手机关闭Flyme:<span>方法1：设置-账户-退出账户</span><span>方法2：打开Flyme官网登录-云服务-登录选择机型-远程退出 </span></p>
+                            </div>
+                        </div>
+                        <div style="padding-left:100px; margin-bottom:15px;">
+                            <input style="width:410px;padding:3px 10px;display:none;" type="text" name="pwd" placeholder="请提供开机密码和iCloud或Flyme账号密码（备注类型并以空格间隔）">
+                            <p style="margin-top:10px;">
+                                温馨提示：发货前请确保以下账号密码已解锁，未解除将无法质检导致交易失败。<br>
+                                1、开机密码；2、iCloud或Flyme账号密码；3、还原密码
+                            </p>
                         </div>
                     </div>
-                    <div style="padding-left:100px; margin-bottom:15px;">
-                        <input style="width:410px;padding:3px 10px;display:none;" type="text" name="pwd" placeholder="请提供开机密码和iCloud或Flyme账号密码（备注类型并以空格间隔）">
-                        <p style="margin-top:10px;">
-                            温馨提示：发货前请确保以下账号密码已解锁，未解除将无法质检导致交易失败。<br>
-                            1、开机密码；2、iCloud或Flyme账号密码；3、还原密码
-                        </p>
-                    </div>
+
+                    <!-- 手机解锁情况end-->
                 </div>
 
-                <!-- 手机解锁情况end-->
-            </div>
-
-
-            <script>
-                function 	new_member_bank(val){
-                    $("div[name='item_member_bank']").attr('class','contanct_c');
-                    if(val)	$("#new_member_bank_div").css('display','none');
-                    else	$("#new_member_bank_div").css('display','block');
-                    $("#item_member_bank_"+val).attr('class','contanct_c check');
-                }
-                function show_card_sn_format(){
-                    var new_str	=	'';
-                    str			=	$.trim($("#card_sn").val());
-                    if(str.length	==	0){
-                        $("#card_sn_format").css('display','none');
-                        return;
+                <script>
+                    function 	new_member_bank(val){
+                        $("div[name='item_member_bank']").attr('class','contanct_c');
+                        if(val)	$("#new_member_bank_div").css('display','none');
+                        else	$("#new_member_bank_div").css('display','block');
+                        $("#item_member_bank_"+val).attr('class','contanct_c check');
                     }
-                    var arr		=	str.split("");
-                    var suffix	=	'';
-                    for(var i = 0; i < arr.length; i++){
-                        if(i > 0	&&	i%4 == 0)	suffix	=	' ';
-                        new_str	+=	suffix+str[i];
-                        suffix	=	'';
-                    }
-                    $("#card_sn_format").css('display','block');
-                    $("#card_sn_format").html(new_str);
-                }
-                function card_sn_blur(){
-                    $("#card_sn_format").css('display','none');
-                }
-            </script>
-            <div id="s2" class="none">
-                <!-- 收款支付宝账号start-->
-                <div class="sub_con_foot">
-                    <div class="contact_ways">收款支付宝账号：</div>
-
-
-                    <div  id="new_member_alipay_div">
-
-                        <ul class="contact_list">
-                            <li class="contact_text">姓名：</li>
-                            <li class="contact_texts"><span class="img_1"><img
-                                    src="images/in_1.gif"></span><span class="img_2"><input name="alipay_realname" id="alipay_realname" type="text" value=""></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span> </li>
-                            <div class="clear"></div>
-                        </ul>
-
-                        <ul class="contact_list">
-                            <li class="contact_text">支付宝账号：</li>
-                            <li class="contact_texts"><span class="img_1"><img
-                                    src="images/in_1.gif"></span><span class="img_2"><input name="alipay_username" id="alipay_username" type="text" value="" ></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*亲，必须是实名认证的支付宝账号哦！</em></span> </li>
-                            <div class="clear"></div>
-                        </ul>
-                    </div>
-
-                </div>
-                <!-- 收款支付宝账号end-->
-            </div>
-
-            <script>
-                function 	new_member_alipay(val){
-                    $("div[name='item_member_alipay']").attr('class','contanct_c');
-                    if(val)	$("#new_member_alipay_div").css('display','none');
-                    else	$("#new_member_alipay_div").css('display','block');
-                    $("#item_member_alipay_"+val).attr('class','contanct_c check');
-                }
-            </script>
-
-            <div id="s3" class="none" >
-                <!-- 回购点start-->
-                <div class="sub_con_foot">
-                    <div class="contact_ways">面交方式(目前仅支持<b style="color:#f60">深圳</b>地区当面交易，其它地区请选择<b style="color:#f60">官方担保交易</b>)</div>
-
-                    <div class="contanct_c check" id="div_mianjiao_method_1">
-                        <label>
-                            <input type="radio" name="mianjiao_method" id="mianjiao_method_1" value="1" checked="checked" onClick="mianjiao_method_click(1)" />
-                            <span style="font-weight:bold;">去回购网面交</span>
-                            <span >地址：广东·深圳市福田区天安数码城天经大厦A701</span>
-                        </label>
-
-                    </div>
-
-
-                    <div class="contanct_c" id="div_mianjiao_method_2">
-                        <label>
-                            <input type="radio" name="mianjiao_method" id="mianjiao_method_2" value="2" onClick="mianjiao_method_click(2)" />
-                            <span style="font-weight:bold;">上门面交</span>
-                            <span >目前支持福田区，罗湖区，南山区（建议选择地铁口面交）</span>
-                        </label>
-                    </div>
-
-                    <link href="js/new_js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css"/>
-                    <script src="js/new_js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
-
-                    <div class="contanct_c" id="go_mianjiao_method_2" style="display:none;">
-          	<span >上门日期：<input name="yu_time" id="yu_time" type="text" onfocus="return WdatePicker();"  style="width:80px;">
-                                    <em style="padding-left:0px;"><input type="radio" name="mianjiao_hour" value="1" style="vertical-align:middle"/><i>09:00-12:00</i><div class="clear"></div></em>
-                        <em ><input type="radio" name="mianjiao_hour" value="2" style="vertical-align:middle"/><i>12:00-18:00</i><div class="clear"></div></em>
-                        <em ><input type="radio" name="mianjiao_hour" value="3" style="vertical-align:middle"/><i>18:00-21:00</i><div class="clear"></div></em>
-                                    </span>
-                        <span >沿途临近（地铁）：
-            <input type="text" name="ditie_xian" id="ditie_xian" style="width:60px;" /> 线
-            <input type="text" name="ditie_zhan" id="ditie_zhan" style="width:60px;" /> 站
-            </span>
-                    </div>
-                    <script>
-                        function 	mianjiao_method_click(val){
-                            var a=1,b=1;
-                            a	=	val==1?1:val;
-                            b	=	val==1?2:1;
-                            $("#div_mianjiao_method_"+a).attr('class','contanct_c check');
-                            $("#div_mianjiao_method_"+b).attr('class','contanct_c');
-                            $("#go_mianjiao_method_"+a).css('display','');
-                            $("#go_mianjiao_method_"+b).css('display','none');
+                    function show_card_sn_format(){
+                        var new_str	=	'';
+                        str			=	$.trim($("#card_sn").val());
+                        if(str.length	==	0){
+                            $("#card_sn_format").css('display','none');
+                            return;
                         }
-                    </script>
+                        var arr		=	str.split("");
+                        var suffix	=	'';
+                        for(var i = 0; i < arr.length; i++){
+                            if(i > 0	&&	i%4 == 0)	suffix	=	' ';
+                            new_str	+=	suffix+str[i];
+                            suffix	=	'';
+                        }
+                        $("#card_sn_format").css('display','block');
+                        $("#card_sn_format").html(new_str);
+                    }
+                    function card_sn_blur(){
+                        $("#card_sn_format").css('display','none');
+                    }
+                </script>
+                <div id="s2" class="none">
+                    <!-- 收款支付宝账号start-->
+                    <div class="sub_con_foot">
+                        <div class="contact_ways">收款支付宝账号：</div>
+                        <div  id="new_member_alipay_div">
+                            <ul class="contact_list">
+                                <li class="contact_text">姓名：</li>
+                                <li class="contact_texts">
+                                    <span class="img_1"><img src="images/in_1.gif"></span>
+                                    <span class="img_2"><input name="payName" id="payName" type="text" value=""></span>
+                                    <span class="img_1"><IMG src="images/in_3.gif"></span>
+                                    <span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*</em></span>
+                                </li>
+                                <div class="clear"></div>
+                            </ul>
+                            <ul class="contact_list">
+                                <li class="contact_text">支付宝账号：</li>
+                                <li class="contact_texts"><span class="img_1"><img
+                                        src="images/in_1.gif"></span><span class="img_2"><input name="payAccount" id="payAccount" type="text" value="" ></span> <span class="img_1"><IMG src="images/in_3.gif"></span><span class="img_3"><em style="color: red; font-size:12px;margin-right: 10px;">*亲，必须是实名认证的支付宝账号哦！</em></span> </li>
+                                <div class="clear"></div>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 收款支付宝账号end-->
                 </div>
-                <!-- 回购点end-->
-            </div>
+
+                <script>
+                    function 	new_member_alipay(val){
+                        $("div[name='item_member_alipay']").attr('class','contanct_c');
+                        if(val)	$("#new_member_alipay_div").css('display','none');
+                        else	$("#new_member_alipay_div").css('display','block');
+                        $("#item_member_alipay_"+val).attr('class','contanct_c check');
+                    }
+                </script>
+
+                <div id="s3" class="none" >
+                    <!-- 回购点start-->
+                    <div class="sub_con_foot">
+                        <div class="contact_ways">面交方式(目前仅支持<b style="color:#f60">深圳</b>地区当面交易，其它地区请选择<b style="color:#f60">官方担保交易</b>)</div>
+
+                        <div class="contanct_c check" id="div_mianjiao_method_1">
+                            <label>
+                                <input type="radio" name="mianjiao_method" id="mianjiao_method_1" value="1" checked="checked" onClick="mianjiao_method_click(1)" />
+                                <span style="font-weight:bold;">去回购网面交</span>
+                                <span >地址：广东·深圳市福田区天安数码城天经大厦A701</span>
+                            </label>
+
+                        </div>
+
+
+                        <div class="contanct_c" id="div_mianjiao_method_2">
+                            <label>
+                                <input type="radio" name="mianjiao_method" id="mianjiao_method_2" value="2" onClick="mianjiao_method_click(2)" />
+                                <span style="font-weight:bold;">上门面交</span>
+                                <span >目前支持福田区，罗湖区，南山区（建议选择地铁口面交）</span>
+                            </label>
+                        </div>
+
+                        <link href="js/new_js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css"/>
+                        <script src="js/new_js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+
+                        <div class="contanct_c" id="go_mianjiao_method_2" style="display:none;">
+                <span >上门日期：<input name="yu_time" id="yu_time" type="text" onfocus="return WdatePicker();"  style="width:80px;">
+                                        <em style="padding-left:0px;"><input type="radio" name="mianjiao_hour" value="1" style="vertical-align:middle"/><i>09:00-12:00</i><div class="clear"></div></em>
+                            <em ><input type="radio" name="mianjiao_hour" value="2" style="vertical-align:middle"/><i>12:00-18:00</i><div class="clear"></div></em>
+                            <em ><input type="radio" name="mianjiao_hour" value="3" style="vertical-align:middle"/><i>18:00-21:00</i><div class="clear"></div></em>
+                                        </span>
+                            <span >沿途临近（地铁）：
+                <input type="text" name="ditie_xian" id="ditie_xian" style="width:60px;" /> 线
+                <input type="text" name="ditie_zhan" id="ditie_zhan" style="width:60px;" /> 站
+                </span>
+                        </div>
+                        <script>
+                            function 	mianjiao_method_click(val){
+                                var a=1,b=1;
+                                a	=	val==1?1:val;
+                                b	=	val==1?2:1;
+                                $("#div_mianjiao_method_"+a).attr('class','contanct_c check');
+                                $("#div_mianjiao_method_"+b).attr('class','contanct_c');
+                                $("#go_mianjiao_method_"+a).css('display','');
+                                $("#go_mianjiao_method_"+b).css('display','none');
+                            }
+                        </script>
+                    </div>
+                    <!-- 回购点end-->
+                </div>
             <script>
                 function 	juan_click(obj,val){
                     if($("#juan_item_"+val).attr('class')	==	'certificate_b_on'){
@@ -456,7 +486,16 @@
       您可选择<a href="http://www.ihuigo.com/html/baoxian.html" style="background:none; padding:0px; color:#03F; font-weight:bold;" target="_blank">参与中国人民财产保险投保计划</a></span>
             &nbsp;&nbsp;
             <label><a href="/service/legal.html" target="_blank"  class="on">我已查看并同意回收协议</a></label>
-            <input type="button" name="sub_button" id="sub_button" value="提交回购单" class="input_btn2" onclick="return checkfrom()" />
+            <input type="button" name="sub_button" id="sub_button" value="提交回购单" class="input_btn2" onclick="submitOrderForm()"/>
+            <script type="text/javascript">
+                function submitOrderForm() {
+                    // 1. 获取拼接地址，设置到隐藏地址输入框
+                    var addr = $("#provinceName").val() + $("#cityName").val() + $("#districtName").val() + $("#address").val();
+                    $("#userAddr").val(addr);
+                    // 2. 提交表单
+                    document.orderForm.submit();
+                }
+            </script>
         </div>
 
         <dl id="baoxian_content" style="display:none;">
@@ -510,6 +549,11 @@
 <!--切换-->
 <script language="javascript">
     function aa(s_id){
+        if (s_id == 2) {
+            $("#retrieveType").val("1");
+        }else if (s_id == 3) {
+            $("#retrieveType").val("2");
+        }
         for(i=1;i<4;i++){
             if(i==s_id){
                 document.getElementById("s"+i).className="block";

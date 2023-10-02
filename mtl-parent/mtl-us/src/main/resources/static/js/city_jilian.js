@@ -98,6 +98,7 @@ function option_province_click(obj){
 	var val		=	$(obj).attr('value');
 	$(obj).parent().siblings(".select_txt").text(text);
 	$("#province").val(val);
+	$("#provinceName").val(obj.innerHTML);
 	province_change();
 }
 /*城市点击事件*/
@@ -106,6 +107,7 @@ function option_city_click(obj){
 	var val		=	$(obj).attr('value');
 	$(obj).parent().siblings(".select_txt").text(text);
 	$("#city").val(val);
+	$("#cityName").val(obj.innerHTML);
 	city_change();
 }
 /*区县点击事件*/
@@ -115,5 +117,6 @@ function option_district_click(obj){
 	var school		=	$(obj).attr('school');
 	$(obj).parent().siblings(".select_txt").text(text);
 	$("#district").val(district);
+	$("#districtName").val(obj.innerHTML);
 	$("#school_id").val(school);
 }
