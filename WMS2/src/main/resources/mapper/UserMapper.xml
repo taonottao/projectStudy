@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.wms2.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.wms2.entity.User">
+        <id column="id" property="id" />
+        <result column="no" property="no" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="age" property="age" />
+        <result column="sex" property="sex" />
+        <result column="phone" property="phone" />
+        <result column="role_id" property="roleId" />
+        <result column="isValid" property="isvalid" />
+        <result column="err_count" property="errCount" />
+        <result column="err_time" property="errTime" />
+        <result column="no_status" property="noStatus" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, no, name, password, age, sex, phone, role_id, isValid, err_count, err_time, no_status
+    </sql>
+
+</mapper>
